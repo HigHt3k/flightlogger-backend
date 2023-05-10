@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home Info Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Weather</h1>
+    <p>Weather information about your current location.</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h1>Weather</h1>
+            <form th:action="@{/weather}" method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Enter city name" name="city">
+                    <button type="submit" class="btn btn-primary">Get Weather</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <h1>Lights</h1>
+            <form th:action="@{/lights}" method="get">
+                <div class="input-group mb-3">
+                    <button type="submit" class="btn btn-primary">Get Lights</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <h1>Plants</h1>
+            <form th:action="@{/plants}" method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Enter plant name" name="plantKeyword">
+                    <button type="submit" class="btn btn-primary">Get Plants</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

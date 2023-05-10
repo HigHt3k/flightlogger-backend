@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Plant Result</title>
+  <!-- Add Bootstrap CSS link -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Plant info for <span th:text="${plant.common_name}"></span></h1>
+  <p>Sunlight: <span th:text="${plant.sunlight}"></span>°C</p>
+  <p>Watering: <span th:text="${plant.watering}"></span></p>
+  <a th:href="@{/}">Check another plant</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Weather Result</title>
+</head>
+    <body>
+        <h1>Weather for <span th:text="${weather.cityName}"></span></h1>
+        <p>Temperature: <span th:text="${weather.temperature}"></span>°C</p>
+        <p>Description: <span th:text="${weather.description}"></span></p>
+        <a th:href="@{/}">Check another city</a>
+    </body>
+</html>

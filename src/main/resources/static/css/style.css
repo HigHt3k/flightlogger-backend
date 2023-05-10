@@ -1,0 +1,40 @@
+body {
+    background-color: #f9f9f9;
+    color: #333333;
+    font-family: "Open Sans", Arial, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Montserrat", Arial, sans-serif;
+    font-weight: bold;
+    color: #333333;
+}
+a {
+    color: #1f77b4;
+}
+.container {
+    max-width: 960px;
+}
+.btn-primary {
+    background-color: #1f77b4;
+    border-color: #1f77b4;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #1573c6;
+    border-color: #1573c6;
+}
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.navbar-brand {
+    color: #333333;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.navbar-nav .nav-link {
+    color: #333333;
+    font-weight: bold;
+}
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link:focus {
+    color: #1f77b4;
+}
