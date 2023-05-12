@@ -35,6 +35,8 @@ public class Plant {
 
     private Integer preferredTemperature;
 
+    private Boolean waterNeeded;
+
     // getters and setters
 
     public Integer getId() {
@@ -131,5 +133,13 @@ public class Plant {
 
     public void setPreferredTemperature(Integer preferredTemperature) {
         this.preferredTemperature = preferredTemperature;
+    }
+
+    public Boolean getWaterNeeded() {
+        return waterNeeded;
+    }
+
+    public void setWaterNeeded(Boolean waterNeeded) {
+        this.waterNeeded = waterNeeded;
     }
 }

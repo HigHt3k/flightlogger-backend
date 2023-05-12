@@ -40,6 +40,7 @@
               <th>Next Watering</th>
               <th>Last Fertilized</th>
               <th>Next Fertilizing</th>
+              <th>Needs Water?</th>
             </tr>
             </thead>
             <tbody>
@@ -54,6 +55,12 @@
               <td th:text="${plant.nextWatering}"></td>
               <td th:text="${plant.lastFertilized}"></td>
               <td th:text="${plant.nextFertilizing}"></td>
+              <td th:text="${plant.waterNeeded}"></td>
+              <td>
+                <form th:action="@{/plants/water/{id}(id=${plant.id})}" method="post">
+                  <button type="submit" class="btn btn-primary">Water Now</button>
+                </form>
+              </td>
             </tr>
             </tbody>
           </table>
