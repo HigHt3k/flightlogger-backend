@@ -26,7 +26,6 @@ public class PlantController {
     public String getPlant(Model model) {
         try {
             List<Plant> plants = plantService.getPlants();
-            logger.info("Found a total of " + plants.size() + " entries in plants database.");
             model.addAttribute("plants", plants);
             return "allPlants";
         } catch (Exception e) {
@@ -38,6 +37,7 @@ public class PlantController {
     @PostMapping("/plants/add")
     public String addNewPlant(@RequestParam("plant") String name) {
         plantService.addPlant(name);
+        logger.info("Added new plant: " + name);
         return "redirect:/plants/all";
     }
 
