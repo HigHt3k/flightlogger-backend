@@ -9,10 +9,12 @@
 </head>
 <body>
 <div class="container">
-  <h1>Plant info for <span th:text="${plant.common_name}"></span></h1>
-  <p>Sunlight: <span th:text="${plant.sunlight}"></span>°C</p>
-  <p>Watering: <span th:text="${plant.watering}"></span></p>
-  <a th:href="@{/}">Check another plant</a>
+  <h1 class="mt-3">A list of Plants</h1>
+  <ul class="list-group mt-3">
+    <!-- Use a vertical list -->
+    <li class="list-group-item" th:each="plant: ${plants}" th:text="${plant.name}" />
+  </ul>
+  <a href="/" class="btn btn-secondary mt-3">Go back</a>
 </div>
 </body>
 </html>
