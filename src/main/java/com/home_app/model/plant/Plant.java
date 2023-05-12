@@ -6,7 +6,8 @@ import java.sql.Timestamp;
 
 
 @Entity
-public class HousePlant {
+@Table(name = "houseplants")
+public class Plant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -32,36 +33,6 @@ public class HousePlant {
     private String direction;
 
     private Integer preferredTemperature;
-
-    public HousePlant(Integer id, String name, String species, Integer wateringCycle, String sunlightNeeds, Timestamp lastWatered, Timestamp lastFertilized, Timestamp nextWatering, Timestamp nextFertilizing, String location, String direction, Integer preferredTemperature) {
-        this.id = id;
-        this.name = name;
-        this.species = species;
-        this.wateringCycle = wateringCycle;
-        this.sunlightNeeds = sunlightNeeds;
-        this.lastWatered = lastWatered;
-        this.lastFertilized = lastFertilized;
-        this.nextWatering = nextWatering;
-        this.nextFertilizing = nextFertilizing;
-        this.location = location;
-        this.direction = direction;
-        this.preferredTemperature = preferredTemperature;
-    }
-
-    public HousePlant() {
-
-    }
-
-    public HousePlant(Integer id, String name, String species, Integer wateringCycle, String sunlightNeeds, String location, String direction, Integer preferredTemperature) {
-        this.id = id;
-        this.name = name;
-        this.species = species;
-        this.wateringCycle = wateringCycle;
-        this.sunlightNeeds = sunlightNeeds;
-        this.location = location;
-        this.direction = direction;
-        this.preferredTemperature = preferredTemperature;
-    }
 
     // getters and setters
 

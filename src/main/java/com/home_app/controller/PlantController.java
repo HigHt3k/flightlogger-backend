@@ -1,7 +1,6 @@
 package com.home_app.controller;
 
-import com.home_app.model.plant.HousePlant;
-import com.home_app.model.plant.PlantRepository;
+import com.home_app.model.plant.Plant;
 import com.home_app.service.PlantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ public class PlantController {
     @GetMapping("/plants")
     public String getPlant(Model model) {
         try {
-            List<HousePlant> plants = plantFinderService.getPlants();
+            List<Plant> plants = plantFinderService.getPlants();
             logger.info("Found a total of " + plants.size() + " entries in plants database.");
             model.addAttribute("plants", plants);
             return "plants";

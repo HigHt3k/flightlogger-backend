@@ -1,6 +1,6 @@
 package com.home_app.service;
 
-import com.home_app.model.plant.HousePlant;
+import com.home_app.model.plant.Plant;
 import com.home_app.model.plant.PlantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class PlantService {
     @Autowired
     PlantRepository repository;
 
-    public List<HousePlant> getPlants() {
+    public List<Plant> getPlants() {
         return repository.findAll();
     }
     

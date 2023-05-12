@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PlantRepository extends JpaRepository<HousePlant, Integer> {
+public interface PlantRepository extends JpaRepository<Plant, Integer> {
 
-    List<HousePlant> findAll();
+    List<Plant> findAll();
 }
