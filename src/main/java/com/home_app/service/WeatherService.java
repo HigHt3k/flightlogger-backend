@@ -3,12 +3,15 @@ package com.home_app.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.home_app.model.weather.Weather;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-dev.properties")
 public class WeatherService {
 
     @Value("${weather.api.key}")
