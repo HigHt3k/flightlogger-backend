@@ -8,6 +8,7 @@ public class HueColorLamp {
     private String swversion;
     private String swconfigid;
     private String productid;
+    private String lightid;
 
     // getters and setters
 
@@ -66,4 +67,13 @@ public class HueColorLamp {
     public void setProductid(String productid) {
         this.productid = productid;
     }
+
+    public String getLightid() {
+        return lightid;
+    }
+
+    public void setLightid(String lightid) {
+        this.lightid = lightid;
+    }
+
 }

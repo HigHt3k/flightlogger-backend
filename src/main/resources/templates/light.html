@@ -8,13 +8,37 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
-  <h1 class="mt-3">A list of lights connected to your Hue System</h1>
-  <ul class="list-group mt-3">
-    <!-- Use a vertical list -->
-    <li class="list-group-item" th:each="light: ${lights}" th:text="${light.name}" />
-  </ul>
-  <a href="/" class="btn btn-secondary mt-3">Go back</a>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Available Lamps</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-wrapper">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>State</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="light : ${lights}">
+            <td th:text="${light.lightid}"></td>
+            <td th:text="${light.name}"></td>
+            <td th:text="${light.state.on}"></td>
+            <td>
+              <form th:action="@{/lights/light/{id}(id=${light.lightid})}" method="post">
+                <button type="submit" class="btn btn-primary">Toggle Lamp</button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
+<a href="/" class="btn btn-secondary mt-3">Go back</a>
 </body>
 </html>
