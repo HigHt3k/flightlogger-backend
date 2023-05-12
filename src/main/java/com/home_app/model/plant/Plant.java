@@ -9,13 +9,14 @@ import java.sql.Timestamp;
 @Table(name = "houseplants")
 public class Plant {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
 
     private String species;
 
+    @Column(name = "watering_cycle")
     private Integer wateringCycle;
 
     private String sunlightNeeds;

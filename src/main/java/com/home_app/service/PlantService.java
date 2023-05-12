@@ -20,5 +20,11 @@ public class PlantService {
     public List<Plant> getPlants() {
         return repository.findAll();
     }
+
+    public void addPlant(String name) {
+        Plant plant = new Plant();
+        plant.setName(name);
+        repository.save(plant);
+    }
     
 }

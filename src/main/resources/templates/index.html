@@ -36,10 +36,18 @@
         </div>
         <div class="col-sm-4">
             <h1>Plants</h1>
-            <form th:action="@{/plants}" method="get">
+            <form th:action="@{/plants/all}" method="get">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Enter plant name" name="plantKeyword">
-                    <button type="submit" class="btn btn-primary">Get Plants</button>
+                    <button type="submit" class="btn btn-primary">Show Plants</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <h1>Plants</h1>
+            <form th:action="@{/plants/add}" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Enter Plant Name" name="plant">
+                    <button type="submit" class="btn btn-primary">Add Plant</button>
                 </div>
             </form>
         </div>
