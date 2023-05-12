@@ -14,9 +14,9 @@
     <name>weather-app</name>
     <description>weather-app</description>
     <properties>
-        <java.version>18</java.version>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <java.version>20</java.version>
+        <maven.compiler.target>2.0</maven.compiler.target>
+        <maven.compiler.source>2.0</maven.compiler.source>
     </properties>
     <dependencies>
         <dependency>
