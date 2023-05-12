@@ -1,24 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Plant Result</title>
-  <!-- Add Bootstrap CSS link -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .table-wrapper {
+      display: block;
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    .table tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
 </head>
   <body>
-    <div class="container">
-      <h1 class="mt-3">A list of Plants</h1>
-      <ul class="list-group mt-3">
-        <!-- Use a vertical list -->
-        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="plant: ${plants}">
-          <span th:text="${plant.name}"></span>
-          <span th:text="${plant.wateringCycle}"></span>
-          <span th:text="${plant.species}"></span>
-        </li>
-      </ul>
-      <a href="/" class="btn btn-secondary mt-3">Go back</a>
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Available Plants</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-wrapper">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Species</th>
+              <th>Location</th>
+              <th>Direction</th>
+              <th>Preferred Temperature</th>
+              <th>Watering Cycle</th>
+              <th>Last Watered</th>
+              <th>Next Watering</th>
+              <th>Last Fertilized</th>
+              <th>Next Fertilizing</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="plant : ${plants}">
+              <td th:text="${plant.name}"></td>
+              <td th:text="${plant.species}"></td>
+              <td th:text="${plant.location}"></td>
+              <td th:text="${plant.direction}"></td>
+              <td th:text="${plant.preferredTemperature}"></td>
+              <td th:text="${plant.wateringCycle}"></td>
+              <td th:text="${plant.lastWatered}"></td>
+              <td th:text="${plant.nextWatering}"></td>
+              <td th:text="${plant.lastFertilized}"></td>
+              <td th:text="${plant.nextFertilizing}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
+  <a href="/" class="btn btn-secondary mt-3">Go back</a>
   </body>
 </html>
