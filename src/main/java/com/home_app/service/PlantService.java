@@ -43,9 +43,7 @@ public class PlantService {
     }
 
     public void updatePlants(List<Plant> plants) {
-        for(Plant plant : plants) {
-            repository.save(plant);
-        }
+        repository.saveAll(plants);
     }
 
     public void calculateNextWateringTimestamp(Plant plant) {
@@ -56,6 +54,8 @@ public class PlantService {
             plant.setNextWatering(new Timestamp(lastWatered.get()
                     .getTime() + (1000L * 60 * 60 * 24 * wateringCycle.get())));
         }
+
+        checkIfWaterNeeded(plant);
     }
 
     public void checkIfWaterNeeded(List<Plant> plants) {
@@ -67,6 +67,17 @@ public class PlantService {
             } else {
                 plant.setWaterNeeded(false);
             }
+        }
+    }
+
+    public void checkIfWaterNeeded(Plant plant) {
+        Timestamp currentDateTime = Timestamp.valueOf(LocalDateTime.now());
+
+        Optional<Timestamp> nextWatering = Optional.ofNullable(plant.getNextWatering());
+        if(nextWatering.isPresent()) {
+            plant.setWaterNeeded(plant.getNextWatering().before(currentDateTime));
+        } else {
+            plant.setWaterNeeded(false);
         }
     }
 }
