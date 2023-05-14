@@ -6,6 +6,29 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // Function to handle color change
+    function handleColorChange(lightId, color) {
+      axios.post(`/lights/light/color/${lightId}`, { color: color })
+              .then(response => {
+                // Handle the response if needed
+                console.log(response.data);
+              })
+              .catch(error => {
+                // Handle the error if needed
+                console.error(error);
+              });
+    }
+
+    $(document).ready(function() {
+      $("input[name='color']").change(function() {
+        const lightId = $(this).closest("tr").find("td:first-child").text().trim();
+        const color = $(this).val();
+        handleColorChange(lightId, color);
+      });
+    });
+  </script>
 </head>
 <body>
 <div class="container mt-4">
@@ -20,6 +43,7 @@
           <tr>
             <th>Name</th>
             <th>State</th>
+            <th>Color</th>
           </tr>
           </thead>
           <tbody>
@@ -28,9 +52,12 @@
             <td th:text="${light.name}"></td>
             <td th:text="${light.state.on}"></td>
             <td>
-              <form th:action="@{/lights/light/{id}(id=${light.lightid})}" method="post">
+              <form th:action="@{/lights/light/state/{id}(id=${light.lightid})}" method="post">
                 <button type="submit" class="btn btn-primary">Toggle Lamp</button>
               </form>
+            </td>
+            <td>
+              <input type="color" name="color" th:value="${light.colorCode}"/>
             </td>
           </tr>
           </tbody>

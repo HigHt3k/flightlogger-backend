@@ -10,6 +10,8 @@ public class HueColorLamp {
     private String productid;
     private String lightid;
 
+    private String colorCode;
+
     // getters and setters
 
     public State getState() {
@@ -76,4 +78,11 @@ public class HueColorLamp {
         this.lightid = lightid;
     }
 
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
 }
