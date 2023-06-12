@@ -1,6 +1,7 @@
 package com.home_app.controller;
 
 import com.home_app.model.hue.HueColorLamp;
+import com.home_app.model.hue.HueMotionSensor;
 import com.home_app.model.plant.Plant;
 import com.home_app.model.weather.Weather;
 import com.home_app.service.HueLightService;

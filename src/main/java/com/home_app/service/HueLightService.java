@@ -2,7 +2,9 @@ package com.home_app.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.home_app.model.hue.HueColorLamp;
+import com.home_app.model.hue.HueMotionSensor;
 import com.home_app.model.hue.LightsResponse;
+import com.home_app.model.hue.SensorsResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -64,6 +66,21 @@ public class HueLightService {
         }
     }
 
+    public Map<String, HueMotionSensor> getMotionSensors() {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = API_URL.replace("{HUE_BRIDGE_IP}", HUE_BRIDGE_IP).replace("{API_KEY}", API_KEY);
+        ResponseEntity<SensorsResponse> response = restTemplate.getForEntity(url, SensorsResponse.class);
+
+        Map<String, HueMotionSensor> sensors = Objects.requireNonNull(response.getBody()).getSensors();
+
+        if(response.getStatusCode() == HttpStatus.OK) {
+            logger.info("Response retrieved from Philips Hue API with response code " + response.getStatusCode());
+            return sensors;
+        } else {
+            throw new RuntimeException("Failed to fetch philips hue sensor data");
+        }
+    }
+
     private String HSBtoHexColorCode(int hue, int saturation, int brightness) {
         float hueConverted = hue/65535f;
         float saturationConverted = saturation/255f;
@@ -85,6 +102,36 @@ public class HueLightService {
             } else {
                 messageBody += "true}";
             }
+
+            executePutRequest(url, messageBody);
+        } else {
+            throw new RuntimeException("lamp not available");
+        }
+    }
+
+    public void setLampOn(int id) {
+        Map<String, HueColorLamp> lamps = getColorLamps();
+        if(lamps.containsKey(String.valueOf(id))) {
+            String url = API_URL.replace("{HUE_BRIDGE_IP}", HUE_BRIDGE_IP).replace("{API_KEY}", API_KEY);
+            url += "/lights/" + id + "/state";
+
+            String messageBody = "{\"on\":";
+            messageBody += "true}";
+
+            executePutRequest(url, messageBody);
+        } else {
+            throw new RuntimeException("lamp not available");
+        }
+    }
+
+    public void setLampOff(int id) {
+        Map<String, HueColorLamp> lamps = getColorLamps();
+        if(lamps.containsKey(String.valueOf(id))) {
+            String url = API_URL.replace("{HUE_BRIDGE_IP}", HUE_BRIDGE_IP).replace("{API_KEY}", API_KEY);
+            url += "/lights/" + id + "/state";
+
+            String messageBody = "{\"on\":";
+            messageBody += "false}";
 
             executePutRequest(url, messageBody);
         } else {
