@@ -24,6 +24,7 @@ public class PlaneSpottingController {
     public String getSightings(Model model) {
         try {
             List<Sighting> sightings = planeSpottingService.getSightings();
+            logger.info("Found a total of {} sightings", sightings.size());
             model.addAttribute("sightings", sightings);
             return "sightings";
         } catch (Exception e) {
