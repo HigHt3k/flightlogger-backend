@@ -74,7 +74,6 @@ public class HueLightService {
         Map<String, HueMotionSensor> sensors = Objects.requireNonNull(response.getBody()).getSensors();
 
         if(response.getStatusCode() == HttpStatus.OK) {
-            logger.info("Response retrieved from Philips Hue API with response code " + response.getStatusCode());
             return sensors;
         } else {
             throw new RuntimeException("Failed to fetch philips hue sensor data");
