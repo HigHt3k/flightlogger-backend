@@ -1,11 +1,11 @@
 package com.home_app.model.planespotting;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.awt.*;
 
+@Entity
+@Table(name = "sighting_images")
 public class SightingImage {
 
     @Id
