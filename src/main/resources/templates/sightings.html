@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <style>
+    .table-wrapper {
+      display: block;
+      max-height: 500px;
+      overflow-y: auto;
+      overflow-x: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    .table tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+  <body>
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Available Plants</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-wrapper">
+          <table id="sightingsTable" class="table table-striped">
+            <thead>
+            <tr>
+              <th>AC REG</th>
+              <th>Date</th>
+              <th>AC TYPE</th>
+              <th>DEP</th>
+              <th>ARR</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sighting : ${sightings}">
+              <td th:text="${sighting.aircraftRegistration}"></td>
+              <td th:text="${sighting.sightingDate}"></td>
+              <td th:text="${sighting.aircraftType}"></td>
+              <td th:text="${sighting.departureICAO}"></td>
+              <td th:text="${sighting.arrivalICAO}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="/" class="btn btn-secondary mt-3">Go back</a>
+  </body>
+</html>
