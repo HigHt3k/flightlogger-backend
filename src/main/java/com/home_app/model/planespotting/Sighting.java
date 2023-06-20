@@ -16,9 +16,13 @@ public class Sighting {
     private String aircraftType;
     private String operator;
     private String flightNumber;
+    @Column(name = "arrival_icao")
     private String arrivalICAO;
+    @Column(name = "arrival_iata")
     private String arrivalIATA;
+    @Column(name = "departure_icao")
     private String departureICAO;
+    @Column(name = "departure_iata")
     private String departureIATA;
 
     public Integer getSightingId() {
