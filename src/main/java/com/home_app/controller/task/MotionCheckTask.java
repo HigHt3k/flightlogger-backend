@@ -38,26 +38,24 @@ public class MotionCheckTask {
     }
 
     private void turnOnHallway() {
-        Thread thread = new Thread() {
-            public void run(){
-                Map<String, HueColorLamp> lamps = hueLightService.getColorLamps();
-                for(Map.Entry<String, HueColorLamp> entry : lamps.entrySet()) {
-                    if(entry.getValue().getName().contains("Hallway")) {
-                        hueLightService.setLampOn(Integer.parseInt(entry.getValue().getLightid()));
-                    }
-                }
-                try {
-                    sleep(5000*60);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                for(Map.Entry<String, HueColorLamp> entry : lamps.entrySet()) {
-                    if(entry.getValue().getName().contains("Hallway")) {
-                        hueLightService.setLampOff(Integer.parseInt(entry.getValue().getLightid()));
-                    }
+        Thread thread = new Thread(() -> {
+            Map<String, HueColorLamp> lamps = hueLightService.getColorLamps();
+            for(Map.Entry<String, HueColorLamp> entry : lamps.entrySet()) {
+                if(entry.getValue().getName().contains("Hallway")) {
+                    hueLightService.setLampOn(Integer.parseInt(entry.getValue().getLightid()));
                 }
             }
-        };
+            try {
+                Thread.sleep(5000*60);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            for(Map.Entry<String, HueColorLamp> entry : lamps.entrySet()) {
+                if(entry.getValue().getName().contains("Hallway")) {
+                    hueLightService.setLampOff(Integer.parseInt(entry.getValue().getLightid()));
+                }
+            }
+        });
         thread.start();
     }
 }
