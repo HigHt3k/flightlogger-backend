@@ -12,4 +12,6 @@ public interface AircraftRepository extends JpaRepository<Aircraft ,Integer> {
     List<Aircraft> findAll();
 
     Optional<Aircraft> findById(Integer id);
+
+    Optional<Aircraft> findByAircraftRegistration(String aircraftRegistration);
 }

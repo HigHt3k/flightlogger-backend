@@ -1,9 +1,6 @@
 package com.home_app.service;
 
-import com.home_app.model.planespotting.Sighting;
-import com.home_app.model.planespotting.SightingImage;
-import com.home_app.model.planespotting.SightingImageRepository;
-import com.home_app.model.planespotting.SightingRepository;
+import com.home_app.model.planespotting.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,9 @@ public class PlaneSpottingService {
 
     @Autowired
     SightingRepository sightingRepository;
+
+    @Autowired
+    AircraftRepository aircraftRepository;
 
     @Autowired
     SightingImageRepository sightingImageRepository;
@@ -49,6 +49,11 @@ public class PlaneSpottingService {
     }
 
     public void addSightings(List<Sighting> sightings) {
+        for(Sighting sighting : sightings) {
+            String registration = sighting.getAircraftRegistration();
+            Optional<Aircraft> aircraft = aircraftRepository.findByAircraftRegistration(registration);
+            aircraft.ifPresent(value -> sighting.setAircraftType(value.getAircraftType()));
+        }
         sightingRepository.saveAll(sightings);
     }
 }
