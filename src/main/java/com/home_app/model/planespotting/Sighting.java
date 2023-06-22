@@ -24,6 +24,10 @@ public class Sighting {
     private String departureICAO;
     @Column(name = "departure_iata")
     private String departureIATA;
+    @Column(name = "spotted_at_icao")
+    private String spottedAtICAO;
+    @Column(name = "spotted_at_iata")
+    private String spottedAtIATA;
 
     public Integer getSightingId() {
         return sightingId;
@@ -103,5 +107,21 @@ public class Sighting {
 
     public void setDepartureIATA(String departureIATA) {
         this.departureIATA = departureIATA;
+    }
+
+    public String getSpottedAtICAO() {
+        return spottedAtICAO;
+    }
+
+    public void setSpottedAtICAO(String spottedAtICAO) {
+        this.spottedAtICAO = spottedAtICAO;
+    }
+
+    public String getSpottedAtIATA() {
+        return spottedAtIATA;
+    }
+
+    public void setSpottedAtIATA(String spottedAtIATA) {
+        this.spottedAtIATA = spottedAtIATA;
     }
 }
