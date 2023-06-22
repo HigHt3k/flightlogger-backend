@@ -47,4 +47,8 @@ public class PlaneSpottingService {
         Optional<Sighting> sighting = Objects.requireNonNull(sightingRepository.findById(id));
         sighting.ifPresent(value -> sightingRepository.delete(value));
     }
+
+    public void addSightings(List<Sighting> sightings) {
+        sightingRepository.saveAll(sightings);
+    }
 }
