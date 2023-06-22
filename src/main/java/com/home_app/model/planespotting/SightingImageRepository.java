@@ -9,7 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SightingImageRepository extends JpaRepository<SightingImage, Integer> {
 
-    @Override
     List<SightingImage> findAll();
 
     Optional<SightingImage> findById(Integer id);
