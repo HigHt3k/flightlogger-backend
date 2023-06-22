@@ -41,8 +41,8 @@ public class PlaneSpottingController {
 
     @PostMapping("/planespotting/sightings/add")
     public String addSighting(@RequestParam String aircraftRegistrations,
-                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                              @RequestParam String spottedAtICAO) {
+                                @RequestParam String spottedAtICAO,
+                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         logger.info("Received POST request with name: " + aircraftRegistrations + ", date: " + date);
 
         List<Sighting> sightings = new ArrayList<>();
