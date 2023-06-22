@@ -1,5 +1,6 @@
 package com.home_app.controller;
 
+import com.home_app.controller.task.AircraftDatabaseDownloader;
 import com.home_app.model.planespotting.Sighting;
 import com.home_app.model.plant.Plant;
 import com.home_app.service.PlaneSpottingService;
@@ -25,6 +26,13 @@ public class PlaneSpottingController {
 
     @Autowired
     PlaneSpottingService planeSpottingService;
+
+    private final AircraftDatabaseDownloader aircraftDatabaseDownloader;
+
+    @Autowired
+    public PlaneSpottingController(AircraftDatabaseDownloader aircraftDatabaseDownloader) {
+        this.aircraftDatabaseDownloader = aircraftDatabaseDownloader;
+    }
 
     @GetMapping("/planespotting/sightings")
     public String getSightings(Model model) {
@@ -58,6 +66,12 @@ public class PlaneSpottingController {
 
         planeSpottingService.addSightings(sightings);
 
+        return "redirect:/planespotting/sightings";
+    }
+
+    @GetMapping("/planespotting/aircraft-master-data/update")
+    public String updateAircraftMasterData() {
+        aircraftDatabaseDownloader.downloadCSVAndSaveToDB();
         return "redirect:/planespotting/sightings";
     }
 }
