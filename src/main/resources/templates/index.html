@@ -18,32 +18,37 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
-            <h1>Weather</h1>
+            <h1>Weather Service</h1>
             <form th:action="@{/weather}" method="get">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Enter city name" name="city">
-                    <button type="submit" class="btn btn-primary">Get Weather</button>
+                    <button type="submit" class="btn btn-primary">Show Weather</button>
                 </div>
             </form>
         </div>
         <div class="col-sm-4">
-            <h1>Lights</h1>
+            <h1>HUE Light Service</h1>
             <form th:action="@{/lights}" method="get">
                 <div class="input-group mb-3">
-                    <button type="submit" class="btn btn-primary">Get Lights</button>
+                    <button type="submit" class="btn btn-primary">Show Light Status</button>
                 </div>
             </form>
         </div>
         <div class="col-sm-4">
-            <h1>Plants</h1>
+            <h1>Planespotting Service</h1>
+            <form th:action="@{/planespotting/sightings}" method="get">
+                <div class="input-group mb-3">
+                    <button type="submit" class="btn btn-primary">Show Sightings</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <h1>Plant Service</h1>
             <form th:action="@{/plants/all}" method="get">
                 <div class="input-group mb-3">
                     <button type="submit" class="btn btn-primary">Show Plants</button>
                 </div>
             </form>
-        </div>
-        <div class="col-sm-4">
-            <h1>Plants</h1>
             <form th:action="@{/plants/add}" method="post">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Enter Plant Name" name="plant">
