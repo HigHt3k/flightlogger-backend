@@ -16,6 +16,6 @@ public interface AircraftRepository extends JpaRepository<Aircraft ,Integer> {
 
     Optional<Aircraft> findByAircraftRegistration(String aircraftRegistration);
 
-    @Query("SELECT DISTINCT a.operator FROM Aircraft a")
+    @Query("SELECT DISTINCT a.operatorCode FROM Aircraft a")
     List<String> findDistinctOperators();
 }

@@ -29,6 +29,20 @@
         </tr>
         </tbody>
       </table>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Operator</th>
+          <th>Percentage spotted</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${operatorFleetSpottedPercentageMap}">
+          <td th:text="${entry.key}"></td>
+          <td th:text="${entry.value} + ' %'"></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

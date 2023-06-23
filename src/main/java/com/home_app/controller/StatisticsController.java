@@ -3,6 +3,8 @@ package com.home_app.controller;
 import com.home_app.model.planespotting.Aircraft;
 import com.home_app.model.planespotting.Sighting;
 import com.home_app.service.PlaneSpottingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.spel.ast.Operator;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ public class StatisticsController {
     @Autowired
     private PlaneSpottingService planeSpottingService;
 
+    private final Logger logger = LoggerFactory.getLogger(StatisticsController.class);
+
     @GetMapping("/planespotting/statistics")
     public String showStatistics(Model model) {
         // Retrieve the necessary data for the statistics
@@ -28,12 +32,12 @@ public class StatisticsController {
         // Calculate the statistics
         int uniqueAircraftCount = calculateUniqueAircraftCount(sightings);
         Map<String, Integer> aircraftSightingCountMap = calculateAircraftSightingCount(sightings);
-        //Map<String, Double> operatorFleetSpottedPercentageMap = calculateOperatorFleetSpottedPercentage(operators, aircrafts, sightings);
+        Map<String, Double> operatorFleetSpottedPercentageMap = calculateOperatorFleetSpottedPercentage(operators, aircrafts, sightings);
 
         // Add the statistics data to the model
         model.addAttribute("uniqueAircraftCount", uniqueAircraftCount);
         model.addAttribute("aircraftSightingCountMap", aircraftSightingCountMap);
-        //model.addAttribute("operatorFleetSpottedPercentageMap", operatorFleetSpottedPercentageMap);
+        model.addAttribute("operatorFleetSpottedPercentageMap", operatorFleetSpottedPercentageMap);
 
         return "statistics";
     }
@@ -66,24 +70,28 @@ public class StatisticsController {
     private Map<String, Double> calculateOperatorFleetSpottedPercentage(List<String> operators, List<Aircraft> aircrafts, List<Sighting> sightings) {
         Map<String, Double> operatorFleetSpottedPercentageMap = new HashMap<>();
 
+        logger.info("Found a total of {} operators", operators.size());
+
         for (String operator : operators) {
             int operatorFleetSize = 0;
             int operatorSpottedCount = 0;
 
             for (Aircraft aircraft : aircrafts) {
-                if (aircraft.getOperator().equals(operator)) {
+                if (aircraft.getOperatorCode().equals(operator)) {
                     operatorFleetSize++;
                 }
             }
 
             for (Sighting sighting : sightings) {
-                if (planeSpottingService.findOperatorOfAircraft(sighting.getAircraftRegistration()).equals(operator)) {
+                if(sighting.getAircraft().getOperatorCode().equals(operator)) {
                     operatorSpottedCount++;
                 }
             }
 
             double spottedPercentage = (double) operatorSpottedCount / operatorFleetSize * 100;
-            operatorFleetSpottedPercentageMap.put(operator, spottedPercentage);
+            if(operatorSpottedCount > 0) {
+                operatorFleetSpottedPercentageMap.put(operator, spottedPercentage);
+            }
         }
 
         return operatorFleetSpottedPercentageMap;
