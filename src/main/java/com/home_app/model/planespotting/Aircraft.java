@@ -2,6 +2,8 @@ package com.home_app.model.planespotting;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name =  "aircraft")
 public class Aircraft {
@@ -21,6 +23,10 @@ public class Aircraft {
     private String operator;
     @Column(name = "operator_code")
     private String operatorCode;
+
+    @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL)
+    @Column(name = "aircraft_id")
+    private List<Sighting> sightings;
 
     public Integer getAircraftId() {
         return aircraftId;
@@ -76,5 +82,13 @@ public class Aircraft {
 
     public void setOperatorCode(String operatorCode) {
         this.operatorCode = operatorCode;
+    }
+
+    public List<Sighting> getSightings() {
+        return sightings;
+    }
+
+    public void setSightings(List<Sighting> sightings) {
+        this.sightings = sightings;
     }
 }
