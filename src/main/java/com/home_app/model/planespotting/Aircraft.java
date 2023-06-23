@@ -8,7 +8,6 @@ import java.util.List;
 @Table(name =  "aircraft")
 public class Aircraft {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "icao_24")
     private Integer icao24;
     @Column(name = "aircraft_registration")

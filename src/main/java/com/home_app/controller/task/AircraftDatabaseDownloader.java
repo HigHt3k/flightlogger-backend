@@ -9,6 +9,7 @@ import org.apache.commons.csv.QuoteMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +36,13 @@ import java.util.*;
 @Component
 public class AircraftDatabaseDownloader {
 
-    Logger logger = LoggerFactory.getLogger(AircraftDatabaseDownloader.class);
+    private final AircraftRepository aircraftRepository;
+    private final Logger logger = LoggerFactory.getLogger(AircraftDatabaseDownloader.class);
 
     @Autowired
-    private AircraftRepository aircraftRepository;
+    public AircraftDatabaseDownloader(AircraftRepository aircraftRepository) {
+        this.aircraftRepository = aircraftRepository;
+    }
 
     public void downloadCSV() {
         String baseUrl = "https://opensky-network.org/datasets/metadata/aircraft-database-complete-";

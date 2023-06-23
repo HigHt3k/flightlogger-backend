@@ -41,10 +41,10 @@ public class StatisticsController {
 
     // Helper methods to calculate the statistics
     private int calculateUniqueAircraftCount(List<Sighting> sightings) {
-        Set<String> uniqueAircraftSet = new HashSet<>();
+        Set<Aircraft> uniqueAircraftSet = new HashSet<>();
 
         for (Sighting sighting : sightings) {
-            String aircraft = sighting.getAircraftRegistration();
+            Aircraft aircraft = sighting.getAircraft();
             uniqueAircraftSet.add(aircraft);
         }
 
@@ -55,9 +55,9 @@ public class StatisticsController {
         Map<String, Integer> aircraftSightingCountMap = new HashMap<>();
 
         for (Sighting sighting : sightings) {
-            String aircraft = sighting.getAircraftRegistration();
-            int count = aircraftSightingCountMap.getOrDefault(aircraft, 0);
-            aircraftSightingCountMap.put(aircraft, count + 1);
+            Aircraft aircraft = sighting.getAircraft();
+            int count = aircraftSightingCountMap.getOrDefault(aircraft.getAircraftRegistration(), 0);
+            aircraftSightingCountMap.put(aircraft.getAircraftRegistration(), count + 1);
         }
 
         return aircraftSightingCountMap;

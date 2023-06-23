@@ -14,13 +14,15 @@ import java.util.*;
 @PropertySource("classpath:application-dev.properties")
 public class PlaneSpottingService {
 
-    Logger logger = LoggerFactory.getLogger(PlaneSpottingService.class);
+    private final AircraftRepository aircraftRepository;
+    private final SightingRepository sightingRepository;
+    private final Logger logger = LoggerFactory.getLogger(PlaneSpottingService.class);
 
     @Autowired
-    SightingRepository sightingRepository;
-
-    @Autowired
-    AircraftRepository aircraftRepository;
+    public PlaneSpottingService(AircraftRepository aircraftRepository, SightingRepository sightingRepository) {
+        this.aircraftRepository = aircraftRepository;
+        this.sightingRepository = sightingRepository;
+    }
 
     @Autowired
     SightingImageRepository sightingImageRepository;
