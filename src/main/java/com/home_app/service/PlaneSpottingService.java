@@ -92,4 +92,9 @@ public class PlaneSpottingService {
         }
         return "";
     }
+
+    public Aircraft findAircraftByRegistration(String aircraftRegistration) {
+        Optional<Aircraft> aircraft = aircraftRepository.findByAircraftRegistration(aircraftRegistration);
+        return aircraft.orElse(null);
+    }
 }

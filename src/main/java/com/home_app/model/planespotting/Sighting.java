@@ -33,6 +33,11 @@ public class Sighting {
     @OneToMany(mappedBy = "sighting", cascade = CascadeType.ALL)
     private List<SightingImage> sightingImages;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aircraft_id")
+    private Aircraft aircraft;
+
     public Integer getSightingId() {
         return sightingId;
     }
@@ -135,5 +140,13 @@ public class Sighting {
 
     public void setSightingImages(List<SightingImage> sightingImages) {
         this.sightingImages = sightingImages;
+    }
+
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
+
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
     }
 }

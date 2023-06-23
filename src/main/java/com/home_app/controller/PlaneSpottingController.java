@@ -76,6 +76,7 @@ public class PlaneSpottingController {
             sighting.setAircraftRegistration(registration);
             sighting.setSightingDate(Timestamp.valueOf(date.atStartOfDay()));
             sighting.setSpottedAtICAO(spottedAtICAO);
+            sighting.setAircraft(planeSpottingService.findAircraftByRegistration(registration));
             sightings.add(sighting);
         }
 

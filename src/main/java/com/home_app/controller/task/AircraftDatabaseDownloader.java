@@ -30,10 +30,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class AircraftDatabaseDownloader {
@@ -96,55 +93,83 @@ public class AircraftDatabaseDownloader {
 
             List<String[]> records = csvReader.readAll();
 
-            List<Aircraft> aircrafts = new ArrayList<>();
+            List<Aircraft> aircraftsToAdd = new ArrayList<>();
+            List<Aircraft> aircraftsToUpdate = new ArrayList<>();
+            List<Aircraft> existingAircraftRegistrations = aircraftRepository.findAll();
 
             // Iterate over the records
             for (String[] record : records) {
                 try {
-                    Aircraft aircraft = new Aircraft();
-
                     // Set aircraft properties based on CSV columns.
                     // You may need to convert types and handle potential exceptions.
-                    String icao24 = record[0];
-                    String aircraftRegistration = record[1];
-                    String aircraftManufacturer = record[2];
-                    String aircraftManufacturerSecondary = record[3];
-                    String aircraftType = record[4];
-                    String aircraftTypeShort = record[5];
-                    String information1 = record[6];
-                    String information2 = record[7];
-                    String information3 = record[8];
-                    String information4 = record[9];
-                    String operatorShort = record[10];
-                    String operatorCode = record[11];
-                    String operator = record[12];
-                    String information5 = record[13];
+                    String icao24 = record[0].replaceAll("\"", "");
+                    String aircraftRegistration = record[1].replaceAll("\"", "");
+                    String aircraftManufacturer = record[2].replaceAll("\"", "");
+                    String aircraftManufacturerSecondary = record[3].replaceAll("\"", "");
+                    String aircraftType = record[4].replaceAll("\"", "");
+                    String aircraftTypeShort = record[5].replaceAll("\"", "");
+                    String information1 = record[6].replaceAll("\"", "");
+                    String information2 = record[7].replaceAll("\"", "");
+                    String information3 = record[8].replaceAll("\"", "");
+                    String information4 = record[9].replaceAll("\"", "");
+                    String operatorShort = record[10].replaceAll("\"", "");
+                    String operatorCode = record[11].replaceAll("\"", "");
+                    String operator = record[12].replaceAll("\"", "");
+                    String information5 = record[13].replaceAll("\"", "");
 
-                    if (aircraftRegistration == null || aircraftRegistration.isEmpty() || aircraftRegistration.equals("\"\"")) {
-                        throw new InvalidAircraftRegistrationException("Invalid aircraft registration");
+                    Optional<Aircraft> existingAircraft = aircraftRepository.findByAircraftRegistration(aircraftRegistration);
+                    if (existingAircraft.isPresent()) {
+                        // Check if the existing aircraft has different values
+                        if (!existingAircraft.get().getIcao24().equals(icao24) ||
+                                !existingAircraft.get().getAircraftManufacturer().equals(aircraftManufacturer) ||
+                                !existingAircraft.get().getAircraftType().equals(aircraftType) ||
+                                !existingAircraft.get().getOperator().equals(operator) ||
+                                !existingAircraft.get().getOperatorCode().equals(operatorCode)) {
+                            // Update the existing aircraft
+                            existingAircraft.get().setIcao24(icao24);
+                            existingAircraft.get().setAircraftManufacturer(aircraftManufacturer);
+                            existingAircraft.get().setAircraftType(aircraftType);
+                            existingAircraft.get().setOperator(operator);
+                            existingAircraft.get().setOperatorCode(operatorCode);
+                            aircraftsToUpdate.add(existingAircraft.get());
+                        }
+                    } else {
+                        // Create a new aircraft
+                        Aircraft newAircraft = new Aircraft();
+                        newAircraft.setIcao24(icao24);
+                        newAircraft.setAircraftRegistration(aircraftRegistration);
+                        newAircraft.setAircraftManufacturer(aircraftManufacturer);
+                        newAircraft.setAircraftType(aircraftType);
+                        newAircraft.setOperator(operator);
+                        newAircraft.setOperatorCode(operatorCode);
+                        aircraftsToAdd.add(newAircraft);
                     }
-                    aircraft.setIcao24(icao24.replaceAll("\"", ""));
-                    aircraft.setAircraftRegistration(aircraftRegistration.replaceAll("\"", ""));
-                    aircraft.setAircraftManufacturer(aircraftManufacturer.replaceAll("\"", ""));
-                    aircraft.setAircraftType(aircraftType.replaceAll("\"", ""));
-                    aircraft.setOperator(operator.replaceAll("\"", ""));
-                    aircraft.setOperatorCode(operatorCode.replaceAll("\"", ""));
-
-                    aircrafts.add(aircraft);
+                    // Remove the aircraft registration from the list of existing registrations
+                    existingAircraftRegistrations.remove(aircraftRegistration);
                 } catch (IllegalStateException e) {
                     logger.error("Error processing record: " + Arrays.toString(record) + " at line " + records.indexOf(record), e);
-                    continue;
-                } catch (InvalidAircraftRegistrationException e) {
-                    continue;
                 }
             }
 
-            aircraftRepository.saveAll(aircrafts);
-            logger.info("Added a total of {} aircraft", aircrafts.size());
+            // Delete the aircrafts with the remaining aircraft registrations
+            for (Aircraft aircraft : existingAircraftRegistrations) {
+                Optional<Aircraft> aircraftToDelete = aircraftRepository.findByAircraftRegistration(aircraft.getAircraftRegistration());
+                if(aircraftToDelete.isPresent()) {
+                    aircraftRepository.delete(aircraft);
+                }
+            }
+
+            // Save the new aircrafts and update the existing aircrafts
+            aircraftRepository.saveAll(aircraftsToAdd);
+            aircraftRepository.saveAll(aircraftsToUpdate);
+
+            logger.info("Added a total of {} aircraft and updated a total of {} aircraft",
+                    aircraftsToAdd.size(), aircraftsToUpdate.size());
         } catch (IOException e) {
             logger.error("Error while reading the CSV file", e);
         } catch (CsvException e) {
             logger.error("CSV Error", e);
         }
     }
+
 }
