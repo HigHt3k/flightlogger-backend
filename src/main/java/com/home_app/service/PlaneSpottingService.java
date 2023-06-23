@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -55,5 +56,24 @@ public class PlaneSpottingService {
             aircraft.ifPresent(value -> sighting.setAircraftType(value.getAircraftType()));
         }
         sightingRepository.saveAll(sightings);
+    }
+
+    public Optional<Sighting> getSightingById(Integer sightingId) {
+        return sightingRepository.findById(sightingId);
+    }
+
+    public List<String> findImagePathsBySightingId(Integer sightingId) {
+        List<String> imagePaths = new ArrayList<>();
+        Optional<Sighting> sighting = sightingRepository.findById(sightingId);
+        if(sighting.isPresent()) {
+            Optional<List<SightingImage>> sightingImages =
+                    sightingImageRepository.findBySighting(sighting.get());
+            if(sightingImages.isPresent()) {
+                for(SightingImage sightingImage : sightingImages.get()) {
+                    imagePaths.add(sightingImage.getImagePath());
+                }
+            }
+        }
+        return imagePaths;
     }
 }

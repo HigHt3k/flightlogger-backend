@@ -49,6 +49,8 @@
               <th>DEP</th>
               <th>ARR</th>
               <th>SPOTTED AT</th>
+              <th>Actions</th>
+              <th>Images</th>
             </tr>
             </thead>
             <tbody>
@@ -59,6 +61,26 @@
               <td th:text="${sighting.departureICAO}"></td>
               <td th:text="${sighting.arrivalICAO}"></td>
               <td th:text="${sighting.spottedAtICAO}"></td>
+              <td>
+                <!-- Button to upload pictures -->
+                <form th:action="@{/planespotting/sightings/upload}" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="sightingId" th:value="${sighting.sightingId}">
+                  <input type="file" name="file" accept="image/*" multiple>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+              </td>
+              <td>
+                <div id="imageLinksContainer">
+                  <a th:each="sightingImage : ${sightingImages}"
+                     th:if="${sightingImage.sighting.sightingId == sighting.sightingId}"
+                     th:href="@{'/planespotting/images/' + ${sightingImage.imagePath}}"
+                     target="_blank">
+                    <img th:src="@{'/planespotting/images/' + ${sightingImage.imagePath}}"
+                         alt="Image"
+                         style="max-width: 100px; max-height: 100px;" />
+                  </a>
+                </div>
+              </td>
             </tr>
             </tbody>
           </table>
