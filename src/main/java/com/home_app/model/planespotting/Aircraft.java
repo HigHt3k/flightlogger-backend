@@ -9,10 +9,8 @@ import java.util.List;
 public class Aircraft {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "aircraft_id")
-    private Integer aircraftId;
     @Column(name = "icao_24")
-    private String icao24;
+    private Integer icao24;
     @Column(name = "aircraft_registration")
     private String aircraftRegistration;
     @Column(name = "aircraft_manufacturer")
@@ -25,22 +23,14 @@ public class Aircraft {
     private String operatorCode;
 
     @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL)
-    @Column(name = "aircraft_id")
+    @Column(name = "icao_24")
     private List<Sighting> sightings;
 
-    public Integer getAircraftId() {
-        return aircraftId;
-    }
-
-    public void setAircraftId(Integer aircraftId) {
-        this.aircraftId = aircraftId;
-    }
-
-    public String getIcao24() {
+    public Integer getIcao24() {
         return icao24;
     }
 
-    public void setIcao24(String icao24) {
+    public void setIcao24(Integer icao24) {
         this.icao24 = icao24;
     }
 

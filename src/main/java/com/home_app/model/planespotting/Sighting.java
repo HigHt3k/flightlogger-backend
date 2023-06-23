@@ -35,7 +35,7 @@ public class Sighting {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "aircraft_id")
+    @JoinColumn(name = "icao_24")
     private Aircraft aircraft;
 
     public Integer getSightingId() {
