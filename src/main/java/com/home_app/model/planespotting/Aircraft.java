@@ -2,15 +2,14 @@ package com.home_app.model.planespotting;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name =  "aircraft")
 public class Aircraft {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "aircraft_id")
-    private Integer aircraftId;
     @Column(name = "icao_24")
-    private String icao24;
+    private Integer icao24;
     @Column(name = "aircraft_registration")
     private String aircraftRegistration;
     @Column(name = "aircraft_manufacturer")
@@ -22,19 +21,15 @@ public class Aircraft {
     @Column(name = "operator_code")
     private String operatorCode;
 
-    public Integer getAircraftId() {
-        return aircraftId;
-    }
+    @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL)
+    @Column(name = "icao_24")
+    private List<Sighting> sightings;
 
-    public void setAircraftId(Integer aircraftId) {
-        this.aircraftId = aircraftId;
-    }
-
-    public String getIcao24() {
+    public Integer getIcao24() {
         return icao24;
     }
 
-    public void setIcao24(String icao24) {
+    public void setIcao24(Integer icao24) {
         this.icao24 = icao24;
     }
 
@@ -76,5 +71,13 @@ public class Aircraft {
 
     public void setOperatorCode(String operatorCode) {
         this.operatorCode = operatorCode;
+    }
+
+    public List<Sighting> getSightings() {
+        return sightings;
+    }
+
+    public void setSightings(List<Sighting> sightings) {
+        this.sightings = sightings;
     }
 }

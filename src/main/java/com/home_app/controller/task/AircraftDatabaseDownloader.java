@@ -9,6 +9,7 @@ import org.apache.commons.csv.QuoteMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,18 +31,18 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class AircraftDatabaseDownloader {
 
-    Logger logger = LoggerFactory.getLogger(AircraftDatabaseDownloader.class);
+    private final AircraftRepository aircraftRepository;
+    private final Logger logger = LoggerFactory.getLogger(AircraftDatabaseDownloader.class);
 
     @Autowired
-    private AircraftRepository aircraftRepository;
+    public AircraftDatabaseDownloader(AircraftRepository aircraftRepository) {
+        this.aircraftRepository = aircraftRepository;
+    }
 
     public void downloadCSV() {
         String baseUrl = "https://opensky-network.org/datasets/metadata/aircraft-database-complete-";
@@ -95,17 +96,24 @@ public class AircraftDatabaseDownloader {
                     .build();
 
             List<String[]> records = csvReader.readAll();
-
             List<Aircraft> aircrafts = new ArrayList<>();
+
+            int progress = 0;
 
             // Iterate over the records
             for (String[] record : records) {
+                if(progress % 500 == 0) {
+                    logger.info("Progress: {}/{}", progress, records.size());
+                }
+                progress++;
                 try {
                     Aircraft aircraft = new Aircraft();
 
                     // Set aircraft properties based on CSV columns.
-                    // You may need to convert types and handle potential exceptions.
-                    String icao24 = record[0];
+                    if(record[0].equals("") || record[0].isEmpty()) {
+                        throw new IllegalStateException("primary key value (icao24) is empty, skipping.");
+                    }
+                    Integer icao24 = Integer.parseInt(record[0], 16);
                     String aircraftRegistration = record[1];
                     String aircraftManufacturer = record[2];
                     String aircraftManufacturerSecondary = record[3];
@@ -123,7 +131,7 @@ public class AircraftDatabaseDownloader {
                     if (aircraftRegistration == null || aircraftRegistration.isEmpty() || aircraftRegistration.equals("\"\"")) {
                         throw new InvalidAircraftRegistrationException("Invalid aircraft registration");
                     }
-                    aircraft.setIcao24(icao24.replaceAll("\"", ""));
+                    aircraft.setIcao24(icao24);
                     aircraft.setAircraftRegistration(aircraftRegistration.replaceAll("\"", ""));
                     aircraft.setAircraftManufacturer(aircraftManufacturer.replaceAll("\"", ""));
                     aircraft.setAircraftType(aircraftType.replaceAll("\"", ""));
@@ -147,4 +155,5 @@ public class AircraftDatabaseDownloader {
             logger.error("CSV Error", e);
         }
     }
+
 }

@@ -7,23 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-dev.properties")
 public class PlaneSpottingService {
 
-    Logger logger = LoggerFactory.getLogger(PlaneSpottingService.class);
+    private final AircraftRepository aircraftRepository;
+    private final SightingRepository sightingRepository;
+    private final Logger logger = LoggerFactory.getLogger(PlaneSpottingService.class);
 
     @Autowired
-    SightingRepository sightingRepository;
-
-    @Autowired
-    AircraftRepository aircraftRepository;
+    public PlaneSpottingService(AircraftRepository aircraftRepository, SightingRepository sightingRepository) {
+        this.aircraftRepository = aircraftRepository;
+        this.sightingRepository = sightingRepository;
+    }
 
     @Autowired
     SightingImageRepository sightingImageRepository;
@@ -75,5 +74,29 @@ public class PlaneSpottingService {
             }
         }
         return imagePaths;
+    }
+
+    public List<Sighting> getAllSightings() {
+        return sightingRepository.findAll();
+    }
+
+    public List<Aircraft> getAllAircrafts() {
+        return aircraftRepository.findAll();
+    }
+
+    public List<String> getAllOperators() {
+        return aircraftRepository.findDistinctOperators();
+    }
+
+    public String findOperatorOfAircraft(String aircraftRegistration) {
+        if(aircraftRepository.findByAircraftRegistration(aircraftRegistration).isPresent()) {
+            return aircraftRepository.findByAircraftRegistration(aircraftRegistration).get().getOperator();
+        }
+        return "";
+    }
+
+    public Aircraft findAircraftByRegistration(String aircraftRegistration) {
+        Optional<Aircraft> aircraft = aircraftRepository.findByAircraftRegistration(aircraftRegistration);
+        return aircraft.orElse(null);
     }
 }
