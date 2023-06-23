@@ -3,6 +3,7 @@ package com.home_app.model.planespotting;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name =  "sightings")
@@ -28,6 +29,9 @@ public class Sighting {
     private String spottedAtICAO;
     @Column(name = "spotted_at_iata")
     private String spottedAtIATA;
+
+    @OneToMany(mappedBy = "sighting", cascade = CascadeType.ALL)
+    private List<SightingImage> sightingImages;
 
     public Integer getSightingId() {
         return sightingId;
@@ -123,5 +127,13 @@ public class Sighting {
 
     public void setSpottedAtIATA(String spottedAtIATA) {
         this.spottedAtIATA = spottedAtIATA;
+    }
+
+    public List<SightingImage> getSightingImages() {
+        return sightingImages;
+    }
+
+    public void setSightingImages(List<SightingImage> sightingImages) {
+        this.sightingImages = sightingImages;
     }
 }

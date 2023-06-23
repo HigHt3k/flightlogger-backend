@@ -56,4 +56,8 @@ public class PlaneSpottingService {
         }
         sightingRepository.saveAll(sightings);
     }
+
+    public Optional<Sighting> getSightingById(Integer sightingId) {
+        return sightingRepository.findById(sightingId);
+    }
 }

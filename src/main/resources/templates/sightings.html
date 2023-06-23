@@ -49,6 +49,7 @@
               <th>DEP</th>
               <th>ARR</th>
               <th>SPOTTED AT</th>
+              <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -59,6 +60,14 @@
               <td th:text="${sighting.departureICAO}"></td>
               <td th:text="${sighting.arrivalICAO}"></td>
               <td th:text="${sighting.spottedAtICAO}"></td>
+              <td>
+                <!-- Button to upload pictures -->
+                <form th:action="@{/planespotting/sightings/upload}" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="sightingId" th:value="${sighting.sightingId}">
+                  <input type="file" name="file" accept="image/*" multiple>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+              </td>
             </tr>
             </tbody>
           </table>

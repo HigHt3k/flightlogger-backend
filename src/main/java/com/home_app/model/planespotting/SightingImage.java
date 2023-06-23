@@ -13,6 +13,9 @@ public class SightingImage {
     private Integer sightingImageId;
     private String comment;
     private String imagePath;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sighting_id")
+    private Sighting sighting;
 
     public Integer getSightingImageId() {
         return sightingImageId;
@@ -36,5 +39,13 @@ public class SightingImage {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public Sighting getSighting() {
+        return sighting;
+    }
+
+    public void setSighting(Sighting sighting) {
+        this.sighting = sighting;
     }
 }
