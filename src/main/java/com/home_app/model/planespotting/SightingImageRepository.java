@@ -12,4 +12,6 @@ public interface SightingImageRepository extends JpaRepository<SightingImage, In
     List<SightingImage> findAll();
 
     Optional<SightingImage> findById(Integer id);
+
+    Optional<List<SightingImage>> findBySighting(Sighting sighting);
 }
