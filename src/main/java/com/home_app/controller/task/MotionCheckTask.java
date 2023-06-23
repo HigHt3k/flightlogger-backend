@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Deprecated
 public class MotionCheckTask {
 
+    /*
     String updateTs = "";
 
     @Autowired
@@ -58,4 +60,6 @@ public class MotionCheckTask {
         });
         thread.start();
     }
+
+     */
 }
