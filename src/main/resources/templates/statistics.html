@@ -1,64 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aircraft Statistics</title>
+  <!-- Add Bootstrap CSS link -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-  <style>
-    .table-wrapper {
-      display: block;
-      max-height: 500px;
-      overflow-y: auto;
-      overflow-x: auto;
-      -ms-overflow-style: -ms-autohiding-scrollbar;
-    }
-    .table tbody tr:hover {
-      background-color: #f5f5f5;
-    }
-  </style>
-
 </head>
 <body>
-<h1>Aircraft Sightings Statistics</h1>
-
-<h2>Unique Aircraft Count: <span th:text="${uniqueAircraftCount}"></span></h2>
-
-<h2>Aircraft Sighting Count:</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Aircraft</th>
-    <th>Sighting Count</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="entry : ${aircraftSightingCountMap}">
-    <td th:text="${entry.key}"></td>
-    <td th:text="${entry.value}"></td>
-  </tr>
-  </tbody>
-</table>
-
-<h2>Operator Fleet Spotted Percentage:</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Operator</th>
-    <th>Spotted Percentage</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="entry : ${operatorFleetSpottedPercentageMap}">
-    <td th:text="${entry.key}"></td>
-    <td th:text="${entry.value} + '%'"></td>
-  </tr>
-  </tbody>
-</table>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Aircraft Statistics</h3>
+    </div>
+    <div class="card-body">
+      <h4>Unique Aircraft Count: <span th:text="${uniqueAircraftCount}"></span></h4>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Aircraft Registration</th>
+          <th>Sighting Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${aircraftSightingCountMap}">
+          <td th:text="${entry.key}"></td>
+          <td th:text="${entry.value}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<a href="/" class="btn btn-secondary mt-3">Go back</a>
 </body>
 </html>

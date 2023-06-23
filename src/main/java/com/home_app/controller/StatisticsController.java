@@ -28,12 +28,12 @@ public class StatisticsController {
         // Calculate the statistics
         int uniqueAircraftCount = calculateUniqueAircraftCount(sightings);
         Map<String, Integer> aircraftSightingCountMap = calculateAircraftSightingCount(sightings);
-        Map<String, Double> operatorFleetSpottedPercentageMap = calculateOperatorFleetSpottedPercentage(operators, aircrafts, sightings);
+        //Map<String, Double> operatorFleetSpottedPercentageMap = calculateOperatorFleetSpottedPercentage(operators, aircrafts, sightings);
 
         // Add the statistics data to the model
         model.addAttribute("uniqueAircraftCount", uniqueAircraftCount);
         model.addAttribute("aircraftSightingCountMap", aircraftSightingCountMap);
-        model.addAttribute("operatorFleetSpottedPercentageMap", operatorFleetSpottedPercentageMap);
+        //model.addAttribute("operatorFleetSpottedPercentageMap", operatorFleetSpottedPercentageMap);
 
         return "statistics";
     }
