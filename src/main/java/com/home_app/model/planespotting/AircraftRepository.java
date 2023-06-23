@@ -1,6 +1,7 @@
 package com.home_app.model.planespotting;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +15,7 @@ public interface AircraftRepository extends JpaRepository<Aircraft ,Integer> {
     Optional<Aircraft> findById(Integer id);
 
     Optional<Aircraft> findByAircraftRegistration(String aircraftRegistration);
+
+    @Query("SELECT DISTINCT a.operator FROM Aircraft a")
+    List<String> findDistinctOperators();
 }

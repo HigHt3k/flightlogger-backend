@@ -1,6 +1,7 @@
 package com.home_app.controller;
 
 import com.home_app.controller.task.AircraftDatabaseDownloader;
+import com.home_app.model.planespotting.Aircraft;
 import com.home_app.model.planespotting.Sighting;
 import com.home_app.model.planespotting.SightingImage;
 import com.home_app.model.plant.Plant;
@@ -28,10 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Controller
