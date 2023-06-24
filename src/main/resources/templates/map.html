@@ -15,18 +15,26 @@
 <body>
 <h1>Flight Map</h1>
 
-<div id="map" style="height: 400px;"></div>
+<div id="map" style="height: 750px;"></div>
 
 <script th:inline="javascript">
     // Get the flight logs data from the Thymeleaf model
     const flightLogs = /*[[${flightLogs}]]*/ [];
 
     // Create a map instance and set its initial view
-    const map = L.map('map').setView([flightLogs[0].firstLatitude, flightLogs[0].firstLongitude], 10);
+    const map = L.map('map').setView([53.673500, 9.985630], 7.5);
 
     // Add the tile layer for the base map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // my location
+    const circle = L.circle([53.673500, 9.985630], {
+        color: 'blue',
+        fillColor: 'blue',
+        fillOpacity: 0.5,
+        radius: 500
     }).addTo(map);
 
     // Iterate over the flight logs and create polylines between the points
