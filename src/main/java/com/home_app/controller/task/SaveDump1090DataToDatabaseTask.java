@@ -48,7 +48,7 @@ public class SaveDump1090DataToDatabaseTask {
 
     private void updateFlightLog(Dump1090Data data) {
         int icao24 = data.getIcao24Decimal();
-        Optional<FlightLog> flightLog = flightLogRepository.findByIcao24(icao24);
+        Optional<FlightLog> flightLog = flightLogRepository.findExistingFlight(icao24, new Timestamp(System.currentTimeMillis() - 1000*60*60));
         if(flightLog.isEmpty()) {
             FlightLog newFlightLog = new FlightLog();
             newFlightLog.setIcao24(icao24);
