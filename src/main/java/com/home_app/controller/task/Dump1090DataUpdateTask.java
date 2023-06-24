@@ -49,7 +49,7 @@ public class Dump1090DataUpdateTask {
             socket.close();
         } catch (IOException e) {
             // Handle any errors that occur while connecting or reading data from the socket
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 }
