@@ -55,8 +55,8 @@ public class Dump1090DataService {
                 dump1090Data.setTransmissionType(Integer.parseInt(transmissionType));
             if (!sessionId.isEmpty())
                 dump1090Data.setSessionId(Integer.parseInt(sessionId));
-            if (!icao24Decimal.isEmpty())
-                dump1090Data.setIcao24Decimal(Integer.parseInt(icao24Decimal));
+            if (!hexIdent.isEmpty())
+                dump1090Data.setIcao24Decimal(Integer.parseInt(hexIdent, 16));
             dump1090Data.setHexIdent(hexIdent);
             dump1090Data.setFlightNumber(flightNumber);
             dump1090Data.setDateMessageGenerated(dateMessageGenerated);
