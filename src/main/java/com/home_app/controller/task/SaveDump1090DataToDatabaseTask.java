@@ -51,21 +51,24 @@ public class SaveDump1090DataToDatabaseTask {
             newFlightLog.setLastLatitude(data.getLatitude());
             newFlightLog.setLastLongitude(data.getLongitude());
             newFlightLog.setEmergencyFlag(data.getEmergencyFlag());
-            newFlightLog.setCallsign(data.getCallsign());
-
-            if(data.getDateMessageGenerated() != null && data.getTimeMessageGenerated() != null) {
-                Timestamp timestamp = Timestamp.valueOf(data.getDateMessageGenerated().replace("/", "-")
-                        + " " + data.getTimeMessageGenerated());
-                newFlightLog.setFirstTs(timestamp);
-                newFlightLog.setLastTs(timestamp);
+            if(data.getCallsign() != null) {
+                newFlightLog.setCallsign(data.getCallsign());
             } else {
-                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                newFlightLog.setFirstTs(timestamp);
-                newFlightLog.setLastTs(timestamp);
+                newFlightLog.setCallsign("");
             }
+
+            Timestamp timestamp;
+            if(data.getDateMessageGenerated() != null && data.getTimeMessageGenerated() != null) {
+                timestamp = Timestamp.valueOf(data.getDateMessageGenerated().replace("/", "-")
+                        + " " + data.getTimeMessageGenerated());
+            } else {
+                timestamp = new Timestamp(System.currentTimeMillis());
+            }
+            newFlightLog.setFirstTs(timestamp);
+            newFlightLog.setLastTs(timestamp);
             flightLogRepository.save(newFlightLog);
         } else {
-            if(!data.getCallsign().isEmpty() && flightLog.get().getCallsign().isEmpty()) {
+            if(data.getCallsign() != null && !data.getCallsign().isEmpty() && flightLog.get().getCallsign().isEmpty()) {
                 flightLog.get().setCallsign(data.getCallsign());
             }
             if(data.getLatitude() != 0) {
