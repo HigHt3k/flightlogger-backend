@@ -111,10 +111,9 @@
             url: '/api/aircraft/' + _flightLogId,
             method: 'GET',
             success: function (data) {
-                const aircraftData = data.aircraftRegistration;
                 const flightLog = data.flightLogs.find(log => log.flightLogId === _flightLogId);
 
-                const flightLogData = `Aircraft: ${aircraftData}<br>Callsign: ${flightLog.callsign}`;
+                const flightLogData = `Aircraft: ${data.aircraftRegistration}<br>Callsign: ${flightLog.callsign}<br>Aircraft Type: ${data.aircraftType}`;
 
                 const tooltip = document.getElementById('tooltip');
                 tooltip.innerHTML = flightLogData;
