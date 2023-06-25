@@ -21,6 +21,9 @@
 <div id="map" style="height: 750px;"></div>
 <div id="altitudeSlider"></div>
 
+<!-- Add a hidden tooltip element -->
+<div id="tooltip" style="position: absolute; z-index: 999; background-color: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);"></div>
+
 <script th:inline="javascript">
     // Get the flight logs data from the Thymeleaf model
     const flightLogs = /*[[${flightLogs}]]*/ [];
@@ -59,12 +62,22 @@
         const startPoint = L.latLng(flightLog.firstLatitude, flightLog.firstLongitude);
         const endPoint = L.latLng(flightLog.lastLatitude, flightLog.lastLongitude);
 
-        const altitude = (flightLog.lastAltitude + flightLog.firstAltitude)/2
+        const altitude = (flightLog.lastAltitude + flightLog.firstAltitude) / 2;
 
         const color = colorScale(altitude).hex();
         // Create a polyline between the start and end points
         const line = L.polyline([startPoint, endPoint], {color: color, altitude: altitude}).addTo(map);
         flightLines.push(line);
+
+        // Bind mouseover event to display tooltip
+        line.on('mouseover', function (event) {
+            displayTooltip(event, flightLog.flightLogId);
+        });
+
+        // Bind mouseout event to hide tooltip
+        line.on('mouseout', function () {
+            hideTooltip();
+        });
     });
 
     // Update the visible flights when the slider handles are moved
@@ -78,6 +91,33 @@
             line.setStyle({opacity: altitude >= selectedMinAltitude && altitude <= selectedMaxAltitude ? 1 : 0});
         });
     });
+
+    // Helper function to display the tooltip
+    function displayTooltip(event, _flightLogId) {
+        // Make an asynchronous API call to fetch aircraft data for the flight log
+        $.ajax({
+            url: '/api/aircraft/' + _flightLogId,
+            method: 'GET',
+            success: function (data) {
+                const aircraftData = data.aircraftRegistration;
+                const flightLog = data.flightLogs.find(log => log.flightLogId === _flightLogId);
+
+                const flightLogData = `Aircraft: ${aircraftData}<br>Callsign: ${flightLog.callsign}`;
+
+                const tooltip = document.getElementById('tooltip');
+                tooltip.innerHTML = flightLogData;
+                tooltip.style.left = (event.originalEvent.clientX + 10) + 'px';
+                tooltip.style.top = (event.originalEvent.clientY + 10) + 'px';
+                tooltip.style.display = 'block';
+            }
+        });
+    }
+
+    // Helper function to hide the tooltip
+    function hideTooltip() {
+        const tooltip = document.getElementById('tooltip');
+        tooltip.style.display = 'none';
+    }
 </script>
 </body>
 </html>

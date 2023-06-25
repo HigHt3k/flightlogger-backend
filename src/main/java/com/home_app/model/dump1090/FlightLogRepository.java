@@ -13,8 +13,7 @@ import java.util.Optional;
 public interface FlightLogRepository extends JpaRepository<FlightLog, Integer> {
     Optional<FlightLog> findById(Integer id);
     List<FlightLog> findAll();
-    Optional<FlightLog> findByIcao24(Integer icao24);
 
-    @Query("SELECT f FROM FlightLog f WHERE f.icao24 = :icao24 AND f.lastTs > :interval")
+    @Query("SELECT f FROM FlightLog f WHERE f.aircraft.icao24 = :icao24 AND f.lastTs > :interval")
     Optional<FlightLog> findExistingFlight(@Param("icao24") Integer icao24, @Param("interval") Timestamp interval);
 }

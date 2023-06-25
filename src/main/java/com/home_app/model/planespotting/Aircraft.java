@@ -1,11 +1,14 @@
 package com.home_app.model.planespotting;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.home_app.model.dump1090.FlightLog;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name =  "aircraft")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Aircraft {
     @Id
     @Column(name = "icao_24")
@@ -24,6 +27,10 @@ public class Aircraft {
     @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL)
     @Column(name = "icao_24")
     private List<Sighting> sightings;
+
+    @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL)
+    @Column(name = "icao_24")
+    private List<FlightLog> flightLogs;
 
     public Integer getIcao24() {
         return icao24;
@@ -79,5 +86,13 @@ public class Aircraft {
 
     public void setSightings(List<Sighting> sightings) {
         this.sightings = sightings;
+    }
+
+    public List<FlightLog> getFlightLogs() {
+        return flightLogs;
+    }
+
+    public void setFlightLogs(List<FlightLog> flightLogs) {
+        this.flightLogs = flightLogs;
     }
 }

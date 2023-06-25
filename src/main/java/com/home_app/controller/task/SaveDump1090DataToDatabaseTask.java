@@ -3,6 +3,8 @@ package com.home_app.controller.task;
 import com.home_app.model.dump1090.Dump1090Data;
 import com.home_app.model.dump1090.FlightLog;
 import com.home_app.model.dump1090.FlightLogRepository;
+import com.home_app.model.planespotting.Aircraft;
+import com.home_app.model.planespotting.AircraftRepository;
 import com.home_app.service.Dump1090DataQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +23,15 @@ public class SaveDump1090DataToDatabaseTask {
     private Dump1090DataQueue dataQueue;
 
     private FlightLogRepository flightLogRepository;
+    private AircraftRepository aircraftRepository;
 
     @Autowired
     public SaveDump1090DataToDatabaseTask(Dump1090DataQueue dataQueue,
-                                          FlightLogRepository flightLogRepository) {
+                                          FlightLogRepository flightLogRepository,
+                                          AircraftRepository aircraftRepository) {
         this.dataQueue = dataQueue;
         this.flightLogRepository = flightLogRepository;
+        this.aircraftRepository = aircraftRepository;
     }
 
     @Scheduled(fixedRate = 1000)
@@ -43,7 +48,8 @@ public class SaveDump1090DataToDatabaseTask {
         Optional<FlightLog> flightLog = flightLogRepository.findExistingFlight(icao24, new Timestamp(System.currentTimeMillis() - 1000*60*60));
         if(flightLog.isEmpty()) {
             FlightLog newFlightLog = new FlightLog();
-            newFlightLog.setIcao24(icao24);
+            Optional<Aircraft> aircraft = aircraftRepository.findById(icao24);
+            aircraft.ifPresent(newFlightLog::setAircraft);
             newFlightLog.setFirstAltitude(data.getAltitude());
             newFlightLog.setLastAltitude(data.getAltitude());
             newFlightLog.setFirstLatitude(data.getLatitude());

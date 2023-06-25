@@ -1,8 +1,12 @@
 package com.home_app.model.dump1090;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.home_app.model.planespotting.Aircraft;
+import com.home_app.model.planespotting.Sighting;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "flight_log")
@@ -11,9 +15,6 @@ public class FlightLog {
     @Column(name = "flight_log_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int flightLogId;
-
-    @Column(name = "icao_24")
-    private int icao24;
     private double firstLatitude;
     private double firstLongitude;
     private double lastLatitude;
@@ -25,20 +26,17 @@ public class FlightLog {
     private Timestamp lastTs;
     private String callsign;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "icao_24")
+    @JsonIgnore
+    private Aircraft aircraft;
+
     public int getFlightLogId() {
         return flightLogId;
     }
 
     public void setFlightLogId(int flightLogId) {
         this.flightLogId = flightLogId;
-    }
-
-    public int getIcao24() {
-        return icao24;
-    }
-
-    public void setIcao24(int icao24) {
-        this.icao24 = icao24;
     }
 
     public double getFirstLatitude() {
@@ -119,5 +117,13 @@ public class FlightLog {
 
     public void setCallsign(String callsign) {
         this.callsign = callsign;
+    }
+
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
+
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
     }
 }
