@@ -31,7 +31,7 @@ public class FlightLog {
     @JsonIgnore
     private Aircraft aircraft;
 
-    @OneToMany(mappedBy = "flight_log", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "flightLog", cascade = CascadeType.ALL)
     @Column(name = "flight_log_id")
     @JsonIgnore
     private List<FlightPath> flightPaths;

@@ -3,6 +3,7 @@ package com.home_app.controller.task;
 import com.home_app.model.dump1090.Dump1090Data;
 import com.home_app.model.dump1090.FlightLog;
 import com.home_app.model.dump1090.FlightLogRepository;
+import com.home_app.model.dump1090.FlightPathRepository;
 import com.home_app.model.planespotting.Aircraft;
 import com.home_app.model.planespotting.AircraftRepository;
 import com.home_app.service.Dump1090DataQueue;
@@ -20,18 +21,21 @@ public class SaveDump1090DataToDatabaseTask {
 
     private final Logger logger = LoggerFactory.getLogger(SaveDump1090DataToDatabaseTask.class);
 
-    private Dump1090DataQueue dataQueue;
+    private final Dump1090DataQueue dataQueue;
 
-    private FlightLogRepository flightLogRepository;
-    private AircraftRepository aircraftRepository;
+    private final FlightLogRepository flightLogRepository;
+    private final AircraftRepository aircraftRepository;
+    private final FlightPathRepository flightPathRepository;
 
     @Autowired
     public SaveDump1090DataToDatabaseTask(Dump1090DataQueue dataQueue,
                                           FlightLogRepository flightLogRepository,
-                                          AircraftRepository aircraftRepository) {
+                                          AircraftRepository aircraftRepository,
+                                          FlightPathRepository flightPathRepository) {
         this.dataQueue = dataQueue;
         this.flightLogRepository = flightLogRepository;
         this.aircraftRepository = aircraftRepository;
+        this.flightPathRepository = flightPathRepository;
     }
 
     @Scheduled(fixedRate = 1000)
@@ -101,5 +105,8 @@ public class SaveDump1090DataToDatabaseTask {
             }
             flightLogRepository.save(flightLog.get());
         }
+
+        // update the flight path
+
     }
 }

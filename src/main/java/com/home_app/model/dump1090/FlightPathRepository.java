@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface FlightPathRepository extends JpaRepository<FlightPath, Integer> {
     List<FlightPath> findAll();
-    List<FlightPath> findByFlightLogId(Integer flightLogId);
+    List<FlightPath> findByFlightLog(FlightLog flightLog);
 
 }
