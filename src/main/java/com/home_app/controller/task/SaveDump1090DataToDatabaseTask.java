@@ -32,7 +32,6 @@ public class SaveDump1090DataToDatabaseTask {
     @Scheduled(fixedRate = 1000)
     public void saveDataToDatabase() {
         int currentQueueSize = dataQueue.currentQueueSize();
-        logger.info("Writing a total of {} messages to the database.", currentQueueSize);
         for(int i = 0; i < currentQueueSize; i++) {
             Dump1090Data data = dataQueue.getNextData();
             updateFlightLog(data);
