@@ -1,9 +1,6 @@
 package com.home_app.controller.task;
 
-import com.home_app.model.dump1090.Dump1090Data;
-import com.home_app.model.dump1090.FlightLog;
-import com.home_app.model.dump1090.FlightLogRepository;
-import com.home_app.model.dump1090.FlightPathRepository;
+import com.home_app.model.dump1090.*;
 import com.home_app.model.planespotting.Aircraft;
 import com.home_app.model.planespotting.AircraftRepository;
 import com.home_app.service.Dump1090DataQueue;
@@ -107,6 +104,42 @@ public class SaveDump1090DataToDatabaseTask {
         }
 
         // update the flight path
+        // write a new flight path entry to the database ONLY if the latest entry for a given flight is
+        // older than x seconds
 
+        // only create if the flight log is present.
+        if(flightLog.isPresent() && flightPathValuesPresent(flightLog.get())) {
+            final int writeInterval = 5000; //ms
+            final int flightLogId = flightLog.get().getFlightLogId();
+
+            Optional<Timestamp> newestEntryForFlight = flightPathRepository.findNewestFlightPathEntry(flightLogId);
+            if(newestEntryForFlight.isPresent()) {
+                Timestamp lastTs = newestEntryForFlight.get();
+
+                if(lastTs.before(new Timestamp(System.currentTimeMillis() - writeInterval))) {
+                    // create a new entry
+                    FlightPath flightPath = new FlightPath();
+                    flightPath.setFlightLog(flightLog.get());
+                    flightPath.setAltitude(flightLog.get().getLastAltitude());
+                    flightPath.setLatitude(flightLog.get().getLastLatitude());
+                    flightPath.setLongitude(flightLog.get().getLastLongitude());
+                    flightPath.setCreateTs(new Timestamp(System.currentTimeMillis()));
+                    flightPathRepository.save(flightPath);
+                }
+            } else {
+                // create a new entry
+                FlightPath flightPath = new FlightPath();
+                flightPath.setFlightLog(flightLog.get());
+                flightPath.setAltitude(flightLog.get().getLastAltitude());
+                flightPath.setLatitude(flightLog.get().getLastLatitude());
+                flightPath.setLongitude(flightLog.get().getLastLongitude());
+                flightPath.setCreateTs(new Timestamp(System.currentTimeMillis()));
+                flightPathRepository.save(flightPath);
+            }
+        }
+    }
+
+    private boolean flightPathValuesPresent(FlightLog flightLog) {
+        return flightLog.getLastAltitude() != 0 && flightLog.getLastLatitude() != 0 && flightLog.getLastLongitude() != 0;
     }
 }
