@@ -50,7 +50,11 @@ public class SaveDump1090DataToDatabaseTask {
         if(flightLog.isEmpty()) {
             FlightLog newFlightLog = new FlightLog();
             Optional<Aircraft> aircraft = aircraftRepository.findById(icao24);
-            aircraft.ifPresent(newFlightLog::setAircraft);
+            if(aircraft.isPresent()) {
+                newFlightLog.setAircraft(aircraft.get());
+            } else {
+                return;
+            }
             newFlightLog.setFirstAltitude(data.getAltitude());
             newFlightLog.setLastAltitude(data.getAltitude());
             newFlightLog.setFirstLatitude(data.getLatitude());

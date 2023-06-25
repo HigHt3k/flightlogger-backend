@@ -60,27 +60,36 @@
     // Iterate over the flight logs and create polylines between the points
     const flightLines = [];
     flightLogs.forEach(function(flightLog) {
-        const flightPathPoints = flightPaths
-            .filter(flightPath => flightPath.flightLog.flightLogId === flightLog.flightLogId)
-            .map(flightPath => L.latLng(flightPath.latitude, flightPath.longitude));
+        const currentFlightLodId = flightLog.flightLogId;
+        const flightPathEntries = flightPaths.filter(flightPath => flightPath.flightLog.flightLogId === flightLog.flightLogId);
+        const flightPathPoints = flightPathEntries.map(flightPath => L.latLng(flightPath.latitude, flightPath.longitude));
 
-        const altitude = (flightLog.lastAltitude + flightLog.firstAltitude) / 2;
-        const color = colorScale(altitude).hex();
+        flightPathPoints.forEach(function(flightPathPoint, index) {
+            const altitude = flightPathEntries[index].altitude;
+            const color = altitude !== null ? colorScale(altitude).hex() : '#000000';
 
-        // Create a polyline using flight path points
-        const line = L.polyline(flightPathPoints, {color: color, altitude: altitude}).addTo(map);
-        flightLines.push(line);
-
-        // Bind mouseover event to display tooltip
-        line.on('mouseover', function (event) {
-            displayTooltip(event, flightLog.flightLogId);
+            if (index > 0) {
+                const lineSegment = L.polyline([flightPathPoints[index - 1], flightPathPoint], { color: color, altitude: altitude, flightLogId: currentFlightLodId}).addTo(map);
+                flightLines.push(lineSegment);
+            }
         });
+    });
 
-        // Bind mouseout event to hide tooltip
-        line.on('mouseout', function () {
+    // Bind mouseover event to display tooltip
+    flightLines.forEach(function(lineSegment) {
+        lineSegment.on('mouseover', function(event) {
+            const flightLogId = lineSegment.options.flightLogId;
+            displayTooltip(event, flightLogId);
+        });
+    });
+
+    // Bind mouseout event to hide tooltip
+    flightLines.forEach(function(lineSegment) {
+        lineSegment.on('mouseout', function() {
             hideTooltip();
         });
     });
+
 
     // Update the visible flights when the slider handles are moved
     slider.noUiSlider.on('update', function (values, handle) {
@@ -93,6 +102,7 @@
             line.setStyle({opacity: altitude >= selectedMinAltitude && altitude <= selectedMaxAltitude ? 1 : 0});
         });
     });
+
 
     // Helper function to display the tooltip
     function displayTooltip(event, _flightLogId) {
