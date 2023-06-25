@@ -131,4 +131,12 @@ public class FlightLog {
     public void setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
     }
+
+    public List<FlightPath> getFlightPaths() {
+        return flightPaths;
+    }
+
+    public void setFlightPaths(List<FlightPath> flightPaths) {
+        this.flightPaths = flightPaths;
+    }
 }

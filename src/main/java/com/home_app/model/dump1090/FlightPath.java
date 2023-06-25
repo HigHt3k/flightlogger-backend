@@ -3,6 +3,8 @@ package com.home_app.model.dump1090;
 import com.home_app.model.planespotting.Aircraft;
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "flight_path")
 public class FlightPath {
@@ -24,4 +26,55 @@ public class FlightPath {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_log_id")
     private FlightLog flightLog;
+
+    @Column(name = "create_ts")
+    private Timestamp createTs;
+
+    public Integer getFlightPathId() {
+        return flightPathId;
+    }
+
+    public void setFlightPathId(Integer flightPathId) {
+        this.flightPathId = flightPathId;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public int getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(int altitude) {
+        this.altitude = altitude;
+    }
+
+    public FlightLog getFlightLog() {
+        return flightLog;
+    }
+
+    public void setFlightLog(FlightLog flightLog) {
+        this.flightLog = flightLog;
+    }
+
+    public Timestamp getCreateTs() {
+        return createTs;
+    }
+
+    public void setCreateTs(Timestamp createTs) {
+        this.createTs = createTs;
+    }
 }
