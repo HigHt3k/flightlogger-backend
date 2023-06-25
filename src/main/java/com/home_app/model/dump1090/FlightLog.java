@@ -31,6 +31,11 @@ public class FlightLog {
     @JsonIgnore
     private Aircraft aircraft;
 
+    @OneToMany(mappedBy = "flightLog", cascade = CascadeType.ALL)
+    @Column(name = "flight_log_id")
+    @JsonIgnore
+    private List<FlightPath> flightPaths;
+
     public int getFlightLogId() {
         return flightLogId;
     }
@@ -125,5 +130,13 @@ public class FlightLog {
 
     public void setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
+    }
+
+    public List<FlightPath> getFlightPaths() {
+        return flightPaths;
+    }
+
+    public void setFlightPaths(List<FlightPath> flightPaths) {
+        this.flightPaths = flightPaths;
     }
 }
