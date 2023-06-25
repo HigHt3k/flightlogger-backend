@@ -6,17 +6,20 @@
     <!-- Include any necessary CSS stylesheets -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <!-- Include necessary libraries, e.g., Leaflet -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js" integrity="sha512-zInFF17qBFVvvvFpIfeBzo7Tj7+rQxLeTJDmbxjBz5/zIr89YVbTNelNhdTT+/DCrxoVzBeUPVFJsczKbB7sew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
 </head>
 <body>
 <h1>Flight Map</h1>
 
 <div id="map" style="height: 750px;"></div>
+<div id="altitudeSlider"></div>
 
 <script th:inline="javascript">
     // Get the flight logs data from the Thymeleaf model
@@ -40,7 +43,18 @@
         radius: 500
     }).addTo(map);
 
+    const slider = document.getElementById('altitudeSlider');
+    noUiSlider.create(slider, {
+        start: [0, 45000],
+        connect: true,
+        range: {
+            'min': 0,
+            'max': 45000
+        }
+    });
+
     // Iterate over the flight logs and create polylines between the points
+    const flightLines = [];
     flightLogs.forEach(function(flightLog) {
         const startPoint = L.latLng(flightLog.firstLatitude, flightLog.firstLongitude);
         const endPoint = L.latLng(flightLog.lastLatitude, flightLog.lastLongitude);
@@ -49,7 +63,20 @@
 
         const color = colorScale(altitude).hex();
         // Create a polyline between the start and end points
-        const line = L.polyline([startPoint, endPoint], {color: color}).addTo(map);
+        const line = L.polyline([startPoint, endPoint], {color: color, altitude: altitude}).addTo(map);
+        flightLines.push(line);
+    });
+
+    // Update the visible flights when the slider handles are moved
+    slider.noUiSlider.on('update', function (values, handle) {
+        const selectedAltitudes = slider.noUiSlider.get();
+        const selectedMinAltitude = parseInt(selectedAltitudes[0]);
+        const selectedMaxAltitude = parseInt(selectedAltitudes[1]);
+
+        flightLines.forEach(function (line) {
+            const altitude = line.options.altitude;
+            line.setStyle({opacity: altitude >= selectedMinAltitude && altitude <= selectedMaxAltitude ? 1 : 0});
+        });
     });
 </script>
 </body>
