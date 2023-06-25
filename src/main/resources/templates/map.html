@@ -27,6 +27,7 @@
 <script th:inline="javascript">
     // Get the flight logs data from the Thymeleaf model
     const flightLogs = /*[[${flightLogs}]]*/ [];
+    const flightPaths = /*[[${flightPaths}]]*/ [];
 
     // Create a map instance and set its initial view
     const map = L.map('map').setView([53.673500, 9.985630], 7.5);
@@ -59,14 +60,15 @@
     // Iterate over the flight logs and create polylines between the points
     const flightLines = [];
     flightLogs.forEach(function(flightLog) {
-        const startPoint = L.latLng(flightLog.firstLatitude, flightLog.firstLongitude);
-        const endPoint = L.latLng(flightLog.lastLatitude, flightLog.lastLongitude);
+        const flightPathPoints = flightPaths
+            .filter(flightPath => flightPath.flightLog.flightLogId === flightLog.flightLogId)
+            .map(flightPath => L.latLng(flightPath.latitude, flightPath.longitude));
 
         const altitude = (flightLog.lastAltitude + flightLog.firstAltitude) / 2;
-
         const color = colorScale(altitude).hex();
-        // Create a polyline between the start and end points
-        const line = L.polyline([startPoint, endPoint], {color: color, altitude: altitude}).addTo(map);
+
+        // Create a polyline using flight path points
+        const line = L.polyline(flightPathPoints, {color: color, altitude: altitude}).addTo(map);
         flightLines.push(line);
 
         // Bind mouseover event to display tooltip
