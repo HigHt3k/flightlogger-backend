@@ -11,6 +11,7 @@
     <!-- Include necessary libraries, e.g., Leaflet -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js" integrity="sha512-zInFF17qBFVvvvFpIfeBzo7Tj7+rQxLeTJDmbxjBz5/zIr89YVbTNelNhdTT+/DCrxoVzBeUPVFJsczKbB7sew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <h1>Flight Map</h1>
@@ -23,6 +24,8 @@
 
     // Create a map instance and set its initial view
     const map = L.map('map').setView([53.673500, 9.985630], 7.5);
+
+    const colorScale = chroma.scale(['green', 'yellow', 'orange', 'red', 'purple']).domain([0, 10000, 20000, 30000, 45000]);
 
     // Add the tile layer for the base map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -42,8 +45,11 @@
         const startPoint = L.latLng(flightLog.firstLatitude, flightLog.firstLongitude);
         const endPoint = L.latLng(flightLog.lastLatitude, flightLog.lastLongitude);
 
+        const altitude = (flightLog.lastAltitude + flightLog.firstAltitude)/2
+
+        const color = colorScale(altitude).hex();
         // Create a polyline between the start and end points
-        const line = L.polyline([startPoint, endPoint], {color: 'red'}).addTo(map);
+        const line = L.polyline([startPoint, endPoint], {color: color}).addTo(map);
     });
 </script>
 </body>
