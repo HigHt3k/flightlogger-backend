@@ -94,7 +94,7 @@ public class Dump1090DataService {
             dump1090Data.setRawMessage(rawData);
             dataQueue.addData(dump1090Data);
         } catch(Exception e) {
-            logger.warn("Not parsing line due to unexpected layout: {}", rawData);
+            logger.warn("Unexpected error: ", e);
             Dump1090Data dump1090Data = new Dump1090Data();
             dump1090Data.setRawMessage(rawData);
             dataQueue.addData(dump1090Data);
