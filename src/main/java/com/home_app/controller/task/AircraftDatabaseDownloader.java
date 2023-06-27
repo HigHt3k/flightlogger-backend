@@ -111,62 +111,32 @@ public class AircraftDatabaseDownloader {
                     .withSkipLines(0) // Skip header line if present
                     .build();
 
-            List<String[]> records = csvReader.readAll();
-            logger.info("CSV successfully parsed! Proceeding to save data to table {}", aircraftRepository);
+            logger.info("CSV successfully read! Proceeding to parse data to table {}", aircraftRepository);
+
+            String[] record;
 
             List<Aircraft> aircrafts = new ArrayList<>();
+            int batchSize = 500;
+            int batchCount = 0;
 
-            int progress = 0;
-
-            // Iterate over the records
-            for (String[] record : records) {
-                if(progress % 500 == 0) {
-                    logger.info("Progress: {}/{}", progress, records.size());
-                }
-                progress++;
+            while((record = csvReader.readNext()) != null) {
                 try {
-                    Aircraft aircraft = new Aircraft();
-
-                    // Set aircraft properties based on CSV columns.
-                    if(record[0].equals("") || record[0].isEmpty()) {
-                        throw new IllegalStateException("primary key value (icao24) is empty, skipping.");
-                    }
-                    Integer icao24 = Integer.parseInt(record[0], 16);
-                    String aircraftRegistration = record[1];
-                    String aircraftManufacturer = record[2];
-                    String aircraftManufacturerSecondary = record[3];
-                    String aircraftType = record[4];
-                    String aircraftTypeShort = record[5];
-                    String information1 = record[6];
-                    String information2 = record[7];
-                    String information3 = record[8];
-                    String information4 = record[9];
-                    String operatorShort = record[10];
-                    String operatorCode = record[11];
-                    String operator = record[12];
-                    String information5 = record[13];
-
-                    if (aircraftRegistration == null || aircraftRegistration.isEmpty() || aircraftRegistration.equals("\"\"")) {
-                        throw new InvalidAircraftRegistrationException("Invalid aircraft registration");
-                    }
-                    aircraft.setIcao24(icao24);
-                    aircraft.setAircraftRegistration(aircraftRegistration.replaceAll("\"", ""));
-                    aircraft.setAircraftManufacturer(aircraftManufacturer.replaceAll("\"", ""));
-                    aircraft.setAircraftType(aircraftType.replaceAll("\"", ""));
-                    aircraft.setOperator(operator.replaceAll("\"", ""));
-                    aircraft.setOperatorCode(operatorCode.replaceAll("\"", ""));
-
+                    Aircraft aircraft = createAircraftFromCSVRecord(record);
                     aircrafts.add(aircraft);
-                } catch (IllegalStateException e) {
-                    logger.error("Error processing record: " + Arrays.toString(record) + " at line " + records.indexOf(record), e);
-                    continue;
-                } catch (InvalidAircraftRegistrationException e) {
-                    continue;
+
+                    if(aircrafts.size() >= batchSize) {
+                        aircraftRepository.saveAll(aircrafts);
+                        batchCount += aircrafts.size();
+                        aircrafts.clear();
+
+                        logger.info("Processed and saved {} aircraft records (Batch Count: {})", batchSize, batchCount);
+                    }
+                } catch(Exception e) {
+                    logger.warn("Error processing record: {}", Arrays.toString(record));
                 }
             }
 
-            aircraftRepository.saveAll(aircrafts);
-            logger.info("Added a total of {} aircraft", aircrafts.size());
+            logger.info("Finished processing CSV");
         } catch (IOException e) {
             logger.error("Error while reading the CSV file", e);
         } catch (CsvException e) {
@@ -174,4 +144,38 @@ public class AircraftDatabaseDownloader {
         }
     }
 
+    private Aircraft createAircraftFromCSVRecord(String[] record) throws InvalidAircraftRegistrationException {
+        Aircraft aircraft = new Aircraft();
+
+        // Set aircraft properties based on CSV columns.
+        if(record[0].equals("") || record[0].isEmpty()) {
+            throw new IllegalStateException("primary key value (icao24) is empty, skipping.");
+        }
+        Integer icao24 = Integer.parseInt(record[0], 16);
+        String aircraftRegistration = record[1];
+        String aircraftManufacturer = record[2];
+        String aircraftManufacturerSecondary = record[3];
+        String aircraftType = record[4];
+        String aircraftTypeShort = record[5];
+        String information1 = record[6];
+        String information2 = record[7];
+        String information3 = record[8];
+        String information4 = record[9];
+        String operatorShort = record[10];
+        String operatorCode = record[11];
+        String operator = record[12];
+        String information5 = record[13];
+
+        if (aircraftRegistration == null || aircraftRegistration.isEmpty() || aircraftRegistration.equals("\"\"")) {
+            throw new InvalidAircraftRegistrationException("Invalid aircraft registration");
+        }
+        aircraft.setIcao24(icao24);
+        aircraft.setAircraftRegistration(aircraftRegistration.replaceAll("\"", ""));
+        aircraft.setAircraftManufacturer(aircraftManufacturer.replaceAll("\"", ""));
+        aircraft.setAircraftType(aircraftType.replaceAll("\"", ""));
+        aircraft.setOperator(operator.replaceAll("\"", ""));
+        aircraft.setOperatorCode(operatorCode.replaceAll("\"", ""));
+
+        return aircraft;
+    }
 }
