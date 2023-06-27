@@ -93,7 +93,7 @@ public class AircraftDatabaseDownloader {
     @PostConstruct
     public void checkAndRunTaskIfTableEmpty() {
         logger.info("Checking if aircraft table needs to be populated...");
-        if(aircraftRepository.getCount() >= 1) {
+        if(aircraftRepository.getCount() == 0) {
             logger.info("Aircraft table is empty, running task to populate it.");
             downloadCSVAndSaveToDB();
         } else {
