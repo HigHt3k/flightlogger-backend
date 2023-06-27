@@ -81,9 +81,9 @@ public class SaveDump1090DataToDatabaseTask {
                 newFlightLog.setFirstTs(timestamp);
                 newFlightLog.setLastTs(timestamp);
                 flightLogRepository.save(newFlightLog);
-                logger.info("Saved new flight log with id {}", newFlightLog.getFlightLogId());
+                logger.debug("Saved new flight log with id {}", newFlightLog.getFlightLogId());
             } catch(IllegalArgumentException e) {
-                logger.info("Failed timestamp parsing: {}\nfor line {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated(), data.getRawMessage());
+                logger.error("Failed timestamp parsing: {}\nfor line {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated(), data.getRawMessage());
             }
         } else {
             if(data.getCallsign() != null && !data.getCallsign().isEmpty() && flightLog.get().getCallsign().isEmpty()) {
@@ -119,10 +119,10 @@ public class SaveDump1090DataToDatabaseTask {
 
                 flightLog.get().setLastTs(timestamp);
             } catch(IllegalArgumentException e) {
-                logger.info("Failed timestamp parsing: {}\nfor line {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated(), data.getRawMessage());
+                logger.error("Failed timestamp parsing: {}\nfor line {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated(), data.getRawMessage());
             }
             flightLogRepository.save(flightLog.get());
-            logger.info("updated existing flight log with id {}", flightLog.get().getFlightLogId());
+            logger.debug("updated existing flight log with id {}", flightLog.get().getFlightLogId());
         }
 
         // update the flight path

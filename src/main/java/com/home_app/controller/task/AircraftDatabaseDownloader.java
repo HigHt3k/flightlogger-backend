@@ -132,9 +132,7 @@ public class AircraftDatabaseDownloader {
                         logger.info("Processed and saved {} aircraft records (Batch Count: {})", batchSize, batchCount);
                     }
                 } catch(InvalidAircraftRegistrationException e) {
-                    continue;
-                    // TODO: implement log level
-                    // logger.warn("Invalid aircraft registration");
+                    logger.warn("Invalid aircraft registration");
                 } catch(Exception e) {
                     logger.warn("Error processing record: {}", Arrays.toString(record));
                 }

@@ -20,8 +20,9 @@ public class Dump1090DataService {
     }
 
     public void parseDump1090Data(String rawData) {
+        String[] dataParts = new String[0];
         try {
-            String[] dataParts = rawData.split(",");
+            dataParts = rawData.split(",");
 
             // default
             String messageType = dataParts[0];
@@ -91,9 +92,9 @@ public class Dump1090DataService {
         } catch(NumberFormatException e) {
             logger.warn("Not parsing line due to number format exception: {}", rawData);
         } catch(ArrayIndexOutOfBoundsException e) {
-            logger.warn("Received message with different amount of fields: {}", rawData);
+            logger.warn("Received message with different amount of fields [{}]: {}", dataParts.length, rawData);
         } catch(Exception e) {
-            logger.warn("Unexpected error: ", e);
+            logger.error("Unexpected error: ", e);
         }
     }
 }
