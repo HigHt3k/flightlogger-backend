@@ -24,6 +24,7 @@ public class StatisticsController {
 
     @GetMapping("/planespotting/statistics")
     public String showStatistics(Model model) {
+        /*
         // Retrieve the necessary data for the statistics
         List<Sighting> sightings = planeSpottingService.getAllSightings();
         List<Aircraft> aircrafts = planeSpottingService.getAllAircrafts();
@@ -39,6 +40,7 @@ public class StatisticsController {
         model.addAttribute("aircraftSightingCountMap", aircraftSightingCountMap);
         model.addAttribute("operatorFleetSpottedPercentageMap", operatorFleetSpottedPercentageMap);
 
+         */
         return "statistics";
     }
 
