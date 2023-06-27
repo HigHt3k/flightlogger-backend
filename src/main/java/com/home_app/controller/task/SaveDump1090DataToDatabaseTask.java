@@ -118,7 +118,6 @@ public class SaveDump1090DataToDatabaseTask {
                 }
 
                 flightLog.get().setLastTs(timestamp);
-                logger.info("Saved new flight log with id {}", flightLog.get().getFlightLogId());
             } catch(IllegalArgumentException e) {
                 logger.info("Failed timestamp parsing: {}\nfor line {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated(), data.getRawMessage());
             }
