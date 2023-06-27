@@ -89,12 +89,12 @@ public class Dump1090DataService {
 
             dataQueue.addData(dump1090Data);
         } catch(NumberFormatException e) {
-            logger.warn("Not parsing line due to number format exception");
+            logger.warn("Not parsing line due to number format exception: {}", rawData);
             Dump1090Data dump1090Data = new Dump1090Data();
             dump1090Data.setRawMessage(rawData);
             dataQueue.addData(dump1090Data);
         } catch(Exception e) {
-            logger.warn("Not parsing line due to unexpected layout");
+            logger.warn("Not parsing line due to unexpected layout: {}", rawData);
             Dump1090Data dump1090Data = new Dump1090Data();
             dump1090Data.setRawMessage(rawData);
             dataQueue.addData(dump1090Data);
