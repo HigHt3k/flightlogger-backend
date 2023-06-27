@@ -28,8 +28,6 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-@PropertySource("classpath:application.properties")
-@PropertySource("classpath:application-dev.properties")
 public class HueLightService {
 
     Logger logger = LoggerFactory.getLogger(HueLightService.class);

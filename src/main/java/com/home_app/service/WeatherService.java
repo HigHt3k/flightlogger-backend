@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@PropertySource("classpath:application.properties")
-@PropertySource("classpath:application-dev.properties")
 public class WeatherService {
 
     @Value("${weather.api.key}")

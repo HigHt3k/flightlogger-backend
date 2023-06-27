@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@PropertySource("classpath:application.properties")
-@PropertySource("classpath:application-dev.properties")
 public class PlantService {
 
     Logger logger = LoggerFactory.getLogger(PlantService.class);

@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@PropertySource("classpath:application.properties")
-@PropertySource("classpath:application-dev.properties")
 public class PlaneSpottingService {
 
     private final AircraftRepository aircraftRepository;
