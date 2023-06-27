@@ -37,14 +37,14 @@ public class PlaneSpottingController {
 
     Logger logger = LoggerFactory.getLogger(PlaneSpottingService.class);
 
-    @Autowired
-    PlaneSpottingService planeSpottingService;
+    private final PlaneSpottingService planeSpottingService;
 
     private final AircraftDatabaseDownloader aircraftDatabaseDownloader;
 
     @Autowired
-    public PlaneSpottingController(AircraftDatabaseDownloader aircraftDatabaseDownloader) {
+    public PlaneSpottingController(AircraftDatabaseDownloader aircraftDatabaseDownloader, PlaneSpottingService planeSpottingService) {
         this.aircraftDatabaseDownloader = aircraftDatabaseDownloader;
+        this.planeSpottingService = planeSpottingService;
     }
 
     @GetMapping("/planespotting/sightings")
