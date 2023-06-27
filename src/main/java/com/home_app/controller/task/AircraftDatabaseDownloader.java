@@ -124,13 +124,17 @@ public class AircraftDatabaseDownloader {
                     Aircraft aircraft = createAircraftFromCSVRecord(record);
                     aircrafts.add(aircraft);
 
-                    if(aircrafts.size() >= batchSize) {
+                    if (aircrafts.size() >= batchSize) {
                         aircraftRepository.saveAll(aircrafts);
                         batchCount += aircrafts.size();
                         aircrafts.clear();
 
                         logger.info("Processed and saved {} aircraft records (Batch Count: {})", batchSize, batchCount);
                     }
+                } catch(InvalidAircraftRegistrationException e) {
+                    continue;
+                    // TODO: implement log level
+                    // logger.warn("Invalid aircraft registration");
                 } catch(Exception e) {
                     logger.warn("Error processing record: {}", Arrays.toString(record));
                 }
