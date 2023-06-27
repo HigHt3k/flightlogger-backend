@@ -4,6 +4,7 @@ import com.home_app.exceptions.InvalidAircraftRegistrationException;
 import com.home_app.model.planespotting.Aircraft;
 import com.home_app.model.planespotting.AircraftRepository;
 import com.opencsv.exceptions.CsvException;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import org.apache.commons.csv.QuoteMode;
 import org.slf4j.Logger;
@@ -83,9 +84,23 @@ public class AircraftDatabaseDownloader {
         }
     }
 
-
     @Scheduled(cron = "0 0 12 1 * ?") // This runs at 12 PM on the first day of every month
     @Transactional
+    public void scheduledDownload() {
+        downloadCSVAndSaveToDB();
+    }
+
+    @PostConstruct
+    public void checkAndRunTaskIfTableEmpty() {
+        int aircraftCount = aircraftRepository.findAll().size();
+        if(aircraftCount == 0) {
+            logger.info("Aircraft table is empty, running task to populate it.");
+            downloadCSVAndSaveToDB();
+        } else {
+            logger.info("Aircraft table already populated. Skipping task execution.");
+        }
+    }
+
     public void downloadCSVAndSaveToDB() {
         downloadCSV();
 
