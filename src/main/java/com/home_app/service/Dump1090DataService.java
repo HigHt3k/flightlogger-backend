@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class Dump1090DataService {
 
-    private Dump1090DataQueue dataQueue;
+    private final Dump1090DataQueue dataQueue;
 
     private final Logger logger = LoggerFactory.getLogger(Dump1090DataService.class);
 

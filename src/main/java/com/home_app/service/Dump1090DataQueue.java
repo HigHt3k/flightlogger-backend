@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Component
 public class Dump1090DataQueue {
 
-    private Queue<Dump1090Data> dataQueue;
+    private final Queue<Dump1090Data> dataQueue;
 
     public Dump1090DataQueue() {
         this.dataQueue = new ConcurrentLinkedQueue<>();

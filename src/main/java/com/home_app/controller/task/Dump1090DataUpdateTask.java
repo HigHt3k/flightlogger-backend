@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Component
 public class Dump1090DataUpdateTask {
 
-    private Dump1090DataService dataService;
+    private final Dump1090DataService dataService;
     private final Logger logger = LoggerFactory.getLogger(Dump1090DataUpdateTask.class);
 
     @Autowired
