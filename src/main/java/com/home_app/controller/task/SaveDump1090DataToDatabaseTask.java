@@ -71,10 +71,8 @@ public class SaveDump1090DataToDatabaseTask {
             try {
                 Timestamp timestamp;
                 if(data.getDateMessageGenerated() != null && data.getTimeMessageGenerated() != null) {
-
-                        timestamp = Timestamp.valueOf(data.getDateMessageGenerated().replace("/", "-").replace("\\", "-")
-                                + " " + data.getTimeMessageGenerated());
-
+                    timestamp = Timestamp.valueOf(data.getDateMessageGenerated().replace("/", "-")
+                            + " " + data.getTimeMessageGenerated());
                 } else {
                     timestamp = new Timestamp(System.currentTimeMillis());
                 }
@@ -83,7 +81,7 @@ public class SaveDump1090DataToDatabaseTask {
                 newFlightLog.setLastTs(timestamp);
                 flightLogRepository.save(newFlightLog);
             } catch(IllegalArgumentException e) {
-                logger.info("Failed timestamp parsing: {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated());
+                logger.info("Failed timestamp parsing: {}\nfor line {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated(), data.getRawMessage());
             }
         } else {
             if(data.getCallsign() != null && !data.getCallsign().isEmpty() && flightLog.get().getCallsign().isEmpty()) {

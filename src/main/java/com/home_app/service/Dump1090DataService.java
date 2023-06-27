@@ -90,16 +90,10 @@ public class Dump1090DataService {
             dataQueue.addData(dump1090Data);
         } catch(NumberFormatException e) {
             logger.warn("Not parsing line due to number format exception: {}", rawData);
-            Dump1090Data dump1090Data = new Dump1090Data();
-            dump1090Data.setRawMessage(rawData);
-            dataQueue.addData(dump1090Data);
         } catch(ArrayIndexOutOfBoundsException e) {
             logger.warn("Received message with different amount of fields: {}", rawData);
         } catch(Exception e) {
             logger.warn("Unexpected error: ", e);
-            Dump1090Data dump1090Data = new Dump1090Data();
-            dump1090Data.setRawMessage(rawData);
-            dataQueue.addData(dump1090Data);
         }
     }
 }
