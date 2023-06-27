@@ -70,7 +70,8 @@ public class SaveDump1090DataToDatabaseTask {
 
             try {
                 Timestamp timestamp;
-                if(data.getDateMessageGenerated() != null && data.getTimeMessageGenerated() != null) {
+                if(data.getDateMessageGenerated() != null && data.getTimeMessageGenerated() != null && !data.getDateMessageGenerated().isEmpty()
+                 && !data.getTimeMessageGenerated().isEmpty()) {
                     timestamp = Timestamp.valueOf(data.getDateMessageGenerated().replace("/", "-")
                             + " " + data.getTimeMessageGenerated());
                 } else {
@@ -106,9 +107,20 @@ public class SaveDump1090DataToDatabaseTask {
                     flightLog.get().setFirstAltitude(data.getAltitude());
                 }
             }
-            if(data.getDateMessageGenerated() != null && data.getTimeMessageGenerated() != null) {
-                flightLog.get().setLastTs(Timestamp.valueOf(data.getDateMessageGenerated().replace("/", "-")
-                        + " " + data.getTimeMessageGenerated()));
+            try {
+                Timestamp timestamp;
+                if(data.getDateMessageGenerated() != null && data.getTimeMessageGenerated() != null && !data.getDateMessageGenerated().isEmpty()
+                        && !data.getTimeMessageGenerated().isEmpty()) {
+                    timestamp = Timestamp.valueOf(data.getDateMessageGenerated().replace("/", "-")
+                            + " " + data.getTimeMessageGenerated());
+                } else {
+                    timestamp = new Timestamp(System.currentTimeMillis());
+                }
+
+                flightLog.get().setLastTs(timestamp);
+                logger.info("Saved new flight log with id {}", flightLog.get().getFlightLogId());
+            } catch(IllegalArgumentException e) {
+                logger.info("Failed timestamp parsing: {}\nfor line {}", data.getDateMessageGenerated() + " " + data.getTimeMessageGenerated(), data.getRawMessage());
             }
             flightLogRepository.save(flightLog.get());
             logger.info("updated existing flight log with id {}", flightLog.get().getFlightLogId());
