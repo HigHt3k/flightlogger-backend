@@ -22,7 +22,7 @@ public class Dump1090DataService {
     public void parseDump1090Data(String rawData) {
         String[] dataParts = new String[0];
         try {
-            dataParts = rawData.split(",");
+            dataParts = rawData.split(",", -1);
 
             // default
             String messageType = dataParts[0];
