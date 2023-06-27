@@ -105,12 +105,15 @@ public class AircraftDatabaseDownloader {
         downloadCSV();
 
         try {
+            logger.info("Parsing CSV...");
             Reader reader = Files.newBufferedReader(Paths.get("aircraft-master-data.csv"), StandardCharsets.ISO_8859_1);
             CSVReader csvReader = new CSVReaderBuilder(reader)
                     .withSkipLines(0) // Skip header line if present
                     .build();
 
             List<String[]> records = csvReader.readAll();
+            logger.info("CSV successfully parsed! Proceeding to save data to table {}", aircraftRepository);
+
             List<Aircraft> aircrafts = new ArrayList<>();
 
             int progress = 0;
