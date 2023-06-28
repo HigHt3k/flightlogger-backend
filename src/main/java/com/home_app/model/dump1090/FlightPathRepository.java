@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,10 @@ public interface FlightPathRepository extends JpaRepository<FlightPath, Integer>
 
     @Query("SELECT max(f.createTs) FROM FlightPath f WHERE f.flightLog.flightLogId = :flight_log_id")
     Optional<Timestamp> findNewestFlightPathEntry(@Param("flight_log_id") Integer flightLogId);
+
+    @Query("SELECT f FROM FlightPath f WHERE f.createTs BETWEEN :start_date_time AND :end_date_time")
+    List<FlightPath> findByDateTimeRange(
+            @Param("start_date_time") LocalDateTime startDateTime,
+            @Param("end_date_time") LocalDateTime endDateTime
+    );
 }
