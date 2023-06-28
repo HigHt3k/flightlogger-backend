@@ -5,8 +5,10 @@ import com.home_app.model.dump1090.FlightLogRepository;
 import com.home_app.model.dump1090.FlightPath;
 import com.home_app.model.dump1090.FlightPathRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class MapController {
     @Autowired
     private FlightPathRepository flightPathRepository;
 
+    @CrossOrigin(origins = "frontend.address")
     @GetMapping("/map")
     public String showMap(Model model) {
         List<FlightLog> flightLogList = flightLogRepository.findAll();
