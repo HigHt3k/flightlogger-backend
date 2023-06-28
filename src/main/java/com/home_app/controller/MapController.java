@@ -23,7 +23,6 @@ public class MapController {
     @Autowired
     private FlightPathRepository flightPathRepository;
 
-    @CrossOrigin(origins = "frontend.address")
     @GetMapping("/map")
     public String showMap(Model model) {
         List<FlightLog> flightLogList = flightLogRepository.findAll();
