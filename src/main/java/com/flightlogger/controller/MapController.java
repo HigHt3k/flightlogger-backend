@@ -37,7 +37,6 @@ public class MapController {
             @RequestParam("endDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime
             ) {
         List<FlightLog> flightLogList = flightLogRepository.findByDateTimeRange(Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
-        logger.info(flightLogList.get(0).getFlightPaths().get(0).getFlightPathId().toString());
         return ResponseEntity.ok(flightLogList);
     }
 }
