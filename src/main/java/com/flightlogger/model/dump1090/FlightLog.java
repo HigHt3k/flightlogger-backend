@@ -1,6 +1,8 @@
 package com.flightlogger.model.dump1090;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.flightlogger.model.planespotting.Aircraft;
 import jakarta.persistence.*;
 
@@ -27,12 +29,12 @@ public class FlightLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "icao_24")
-    @JsonIgnore
+    @JsonManagedReference
     private Aircraft aircraft;
 
     @OneToMany(mappedBy = "flightLog", cascade = CascadeType.ALL)
     @Column(name = "flight_log_id")
-    @JsonIgnore
+    @JsonManagedReference
     private List<FlightPath> flightPaths;
 
     public int getFlightLogId() {

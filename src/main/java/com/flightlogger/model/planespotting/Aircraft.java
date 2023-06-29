@@ -1,6 +1,8 @@
 package com.flightlogger.model.planespotting;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.flightlogger.model.dump1090.FlightLog;
 import jakarta.persistence.*;
 
@@ -30,6 +32,7 @@ public class Aircraft {
 
     @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL)
     @Column(name = "icao_24")
+    @JsonBackReference
     private List<FlightLog> flightLogs;
 
     public Integer getIcao24() {

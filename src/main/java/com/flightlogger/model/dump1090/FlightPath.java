@@ -1,5 +1,7 @@
 package com.flightlogger.model.dump1090;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -24,6 +26,7 @@ public class FlightPath {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_log_id")
+    @JsonBackReference
     private FlightLog flightLog;
 
     @Column(name = "create_ts")
