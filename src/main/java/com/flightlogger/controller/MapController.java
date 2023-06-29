@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +32,8 @@ public class MapController {
             @RequestParam("startDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
             @RequestParam("endDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime
             ) {
-        List<FlightLog> flightLogList = flightLogRepository.findByDateTimeRange(startDateTime, endDateTime);
-        List<FlightPath> flightPathList = flightPathRepository.findByDateTimeRange(startDateTime, endDateTime);
+        List<FlightLog> flightLogList = flightLogRepository.findByDateTimeRange(Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
+        List<FlightPath> flightPathList = flightPathRepository.findByDateTimeRange(Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
 
         Map<String, Object> mapData = new HashMap<>();
         mapData.put("flightLogs", flightLogList);
