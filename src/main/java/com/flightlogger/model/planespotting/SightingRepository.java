@@ -1,6 +1,5 @@
 package com.flightlogger.model.planespotting;
 
-import com.flightlogger.model.plant.Plant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
